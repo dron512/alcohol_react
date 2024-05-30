@@ -7,11 +7,9 @@ export const MainWrap = styled.div`
   /* width: 100%; */
 
   .main-header {
-    position: absolute;
-    top: 0;
+    position: relative;
     /* display: flex; */
     min-height: 300px;
-    height: 300px;
     width: 100%;
     text-align: center;
     font-size: 50px;
