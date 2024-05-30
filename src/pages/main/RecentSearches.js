@@ -8,7 +8,6 @@ const RecentSearches = ({ display }) => {
     'Search Term 4',
     'Search Term 5',
   ];
-  console.log(display);
   const divStyle = {
     display,
     backgroundColor: "white",
@@ -17,8 +16,6 @@ const RecentSearches = ({ display }) => {
     borderRadius: "1rem"
     // paddingLeft: "200px"
   };
-  console.log("divStyle :", divStyle);
-
   return (
     <div style={divStyle}>
       <div style={{
