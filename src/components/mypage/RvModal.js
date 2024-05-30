@@ -43,7 +43,7 @@ const RvModal = ({ onClose, code }) => {
   const fetchData = () => {
     postReviewcreate({
       reivewParam: {
-        alcohol: code.code,
+        code: code.alcoholcode,
         writing: writingData,
         grade: gradeData,
         picture: "",
@@ -141,7 +141,7 @@ const RvModal = ({ onClose, code }) => {
 export default RvModal;
 
 export const RvDelete = ({ onClose, code, refreshData }) => {
-  console.log("code", code.id);
+  console.log("code", code);
   const picCodePk = (code.picture.match(/\d+/g) || [])
     .map(number => parseInt(number.replace(/^0+/, ""), 10)) // 첫 번째 자리 숫자가 0이면 제거
     .join("");

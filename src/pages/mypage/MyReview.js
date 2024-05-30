@@ -1,14 +1,11 @@
 import { ConfigProvider, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { MyreviewData, reviewData } from "../../mock/CrtRvwData";
 import { Common } from "../../styles/CommonCss";
 import { TableCustom } from "../../styles/common/tableCss";
 import RvModal, { RvDelete } from "../../components/mypage/RvModal";
 import { StarRev } from "../../styles/common/StarCss";
 import { getReviewList } from "../../api/reviewApi";
 import { BasicBtR } from "../../styles/basic/basicBt";
-import { SERVER_URL } from "../../api/config";
-import jwtAxios from "../../util/jwtUtil";
 
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
@@ -50,7 +47,6 @@ const MyReview = () => {
     });
   }, []);
 
-  // 데이터 새로고치기 위해..만든 무언가..
   const fetchData = () => {
     getReviewList({
       successFn: data => {
@@ -100,7 +96,7 @@ const MyReview = () => {
     {
       title: "내용",
       dataIndex: "content",
-      render: (text, record) => (
+      render: (text, record,index) => (
         <div
           style={{
             width: "600px",
@@ -118,7 +114,7 @@ const MyReview = () => {
       title: "리뷰삭제",
       button: <button>ddldldd</button>,
       render: (text, record, index) => (
-        <BasicBtR onClick={() => handleShowModal(record.id)}>리뷰 삭제</BasicBtR>
+        <BasicBtR onClick={() => handleShowModal(index)}>리뷰 삭제</BasicBtR>
       ),
     },
   ];
