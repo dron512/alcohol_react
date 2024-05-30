@@ -1,6 +1,10 @@
+import axios from 'axios';
 import React from 'react';
 
 const RecentSearches = ({ display }) => {
+
+  
+
   // Array of recent searches
   const recentSearches = ['Search Term 1',
     'Search Term 2',
