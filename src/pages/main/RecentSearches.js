@@ -1,39 +1,45 @@
-import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { SERVER_URL } from '../../api/config';
+import jwtAxios from '../../util/jwtUtil';
 
 const RecentSearches = ({ display }) => {
-
+  const [recentSearches, setRecentSearches] = useState([]);
+  useEffect(() => {
+    jwtAxios.get(`${SERVER_URL}/main/recent`)
+    .then((response) => {
+      setRecentSearches(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [display]);
   
-
   // Array of recent searches
-  const recentSearches = ['Search Term 1',
-    'Search Term 2',
-    'Search Term 3',
-    'Search Term 4',
-    'Search Term 5',
-  ];
+  
   const divStyle = {
     display,
     backgroundColor: "white",
     width: "600px",
     marginLeft: "330px",
     borderRadius: "1rem"
-    // paddingLeft: "200px"
   };
+
   return (
     <div style={divStyle}>
       <div style={{
-        fontSize: "2.5rem",
         marginLeft: "-400px",
         marginTop: "1rem"
-      }}>최근 검색어</div>
-      <ul style={{
+      }}></div>
+      <div style={{
         marginLeft: "-440px",
       }}>
         {recentSearches.map((searchTerm, index) => (
-          <li key={index} style={{ fontSize: '2rem', lineHeight: "4rem" }}>{searchTerm}</li>
+          <div key={index} 
+            style={{ fontSize: '2rem',
+                   lineHeight: "4rem",
+                   }}>{searchTerm.searchcontents}</div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

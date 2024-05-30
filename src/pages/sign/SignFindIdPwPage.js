@@ -5,22 +5,51 @@ import { useNavigate } from "react-router-dom";
 import { Common } from "../../styles/CommonCss";
 import { LoginBt, LoginTitle, LoginWrap } from "../../styles/login/loginCss";
 import axios from "axios";
+import { SERVER_URL } from "../../api/config";
+import Swal from "sweetalert2";
 
 const SignFindIdPwPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birth, setBirth] = useState("");
+  const [birthdate, setBirth] = useState("");
 
   const findEmail = () => {
-    axios.post("http://localhost:8080/member/findEmail", {
-      email,
-      phone,
-    }).then((response) => {
-      console.log(response.data);
-    }).catch((error) => {
-      console.log(error);
-    });
+    if(!birthdate.target){
+      Swal.fire({
+        title:"<p style='font-size:4rem;margin:1rem;'>생년월일을 입력하세요</p>",
+        icon: "info",
+        width: 600,
+        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+        confirmButtonColor: `${Common.color.f900}`,
+      })
+      
+    }else if(!phone.target){
+      Swal.fire({
+        title:"<p style='font-size:4rem;margin:1rem;'>폰번호를 입력하세요</p>",
+        icon: "info",
+        width: 600,
+        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+        confirmButtonColor: `${Common.color.f900}`,
+      })
+    }else{
+      axios.post(`${SERVER_URL}/login/findEmail`, {
+        birthdate: birthdate.target.value,
+        phone: phone.target.value,
+      }).then((response) => {
+        console.log(response.data);
+        Swal.fire({
+          title:
+          `<p style='font-size:4rem;margin:1rem;'>EMAIL\n\n ${response.data}\n\n</p>`,
+          icon: "info",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        })
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
   };
 
   return (
@@ -37,10 +66,9 @@ const SignFindIdPwPage = () => {
         <Form
           name="normal_login"
           className="login-form"
-          // onFinish={onFinish}
         >
           <Form.Item
-            name="email"
+            name="birthdate"
             rules={[
               {
                 required: true,
@@ -51,7 +79,7 @@ const SignFindIdPwPage = () => {
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="생년월일"
-              name="birth"
+              name="birthdate"
               onChange={setBirth}
               style={{
                 width: "100%",
@@ -84,7 +112,6 @@ const SignFindIdPwPage = () => {
           </Form.Item>
 
           <Form.Item>
-            {/* 버튼 style */}
             <Button
               type="primary"
               htmlType="submit"

@@ -7,6 +7,8 @@ import RvModal, { RvDelete } from "../../components/mypage/RvModal";
 import { StarRev } from "../../styles/common/StarCss";
 import { getReviewList } from "../../api/reviewApi";
 import { BasicBtR } from "../../styles/basic/basicBt";
+import { SERVER_URL } from "../../api/config";
+import jwtAxios from "../../util/jwtUtil";
 
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
@@ -32,8 +34,8 @@ const MyReview = () => {
   const handleShowModal = index => {
     setShowModal(true);
     setModalKey(index);
-    console.log("모달로 전달되는 코드 값:", index);
   };
+  
   useEffect(() => {
     getReviewList({
       successFn: data => {
@@ -116,7 +118,7 @@ const MyReview = () => {
       title: "리뷰삭제",
       button: <button>ddldldd</button>,
       render: (text, record, index) => (
-        <BasicBtR onClick={() => handleShowModal(index)}>리뷰 삭제</BasicBtR>
+        <BasicBtR onClick={() => handleShowModal(record.id)}>리뷰 삭제</BasicBtR>
       ),
     },
   ];

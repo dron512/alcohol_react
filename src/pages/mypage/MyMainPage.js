@@ -6,8 +6,9 @@ import { buttonPrimaryStyle } from "../../styles/sign/signArea";
 import Address from "../../components/singup/Address";
 import { Button, Form, Input, Select } from "antd";
 import { Common } from "../../styles/CommonCss";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 const columns = [
   {
@@ -46,8 +47,6 @@ const columns = [
   },
 ];
 
-
-
 const MyMainPage = () => {
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
@@ -56,11 +55,12 @@ const MyMainPage = () => {
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(()=>{
     const fetchData = async()=>{
       jwtAxios.get(`http://192.168.0.8:8080/user/info`)
       .then(result=>{
-        console.log(result);
         setEmail(result.data.email);
         setPhone(result.data.phone);
         setNickname(result.data.nickname);
@@ -68,7 +68,21 @@ const MyMainPage = () => {
         setAddress2(result.data.address2);
       })
       .catch(e=>{
-        console.log(e);
+        Swal.fire(
+          // {
+          //   title: "회원수정",
+          //   text: "<p style='font-size:5rem;margin:1rem;'>회원 수정 되었습니다.</p>",
+          //   icon: "info"
+          // }
+          {
+          title:"<p style='font-size:4rem;margin:1rem;'>로그인하세요</p>",
+          icon: "info",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        }).then(function(){
+          navigate('/sign/in');
+        });
       });
     }
     fetchData();
@@ -82,6 +96,15 @@ const MyMainPage = () => {
       "address2": address2
     }).then(data => {
       console.log(data);
+      Swal.fire(
+        {
+        title:"<p style='font-size:4rem;margin:1rem;'>회원 수정 되었습니다.</p>",
+        icon: "info",
+        width: 600,
+        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+        confirmButtonColor: `${Common.color.f900}`,
+      }
+    );
     }).catch(e => {
       console.log(e);
     });
@@ -138,7 +161,7 @@ const MyMainPage = () => {
           <Address onAddressChange={updateAddressInfo} address={address} />
           <Form.Item>
             <Input
-              style={{ height: 60, fontSize: "20px", width: "50%" }}
+              style={{ height: 60, fontSize: "20px", width: "49%" }}
               onChange={e => setAddress2(e.target.value)}
               value={address2}
               placeholder="상세주소"
