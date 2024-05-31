@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import {
   SignAlcholSearch,
@@ -18,8 +18,12 @@ import {
   ProductWrap,
 } from "../../styles/product/proWrapCss";
 
+
 const ProductPage = ({test}) => {
   const { isLogin } = useCustomLogin();
+  const { type, sub, search, MoveToSearch } = useCustomQuery();
+  const params = { type, sub, search };
+
   // @AREA  이 부분은 테스트용
   const initState = [
     {
@@ -31,11 +35,9 @@ const ProductPage = ({test}) => {
     },
   ];
   const searchInitState = {
-    searchcontents: "",
+    searchcontents: search,
   };
   const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
-  const { type, sub, search, MoveToSearch } = useCustomQuery();
-  const params = { type, sub, search };
 
   const mainCategory = `${params.type}`;
   const subCategory = `${params.sub}`;
@@ -68,8 +70,7 @@ const ProductPage = ({test}) => {
     onError: () => {},
   });
 
-  const handleChangeSearch = e => {
-    console.log(e.target.value);
+  const handleChangeSearch =  e => {
     setAlcoholSearch(prevValue => ({
       searchcontents: e.target.value,
     }));
@@ -105,7 +106,6 @@ const ProductPage = ({test}) => {
   };
 
   // 최근 검색어
-
   const { data: recentData, refetch } = useQuery({
     queryKey: [],
     queryFn: () => {
