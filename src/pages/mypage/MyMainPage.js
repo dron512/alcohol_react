@@ -10,6 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 
+
+
 const MyMainPage = () => {
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
@@ -22,7 +24,7 @@ const MyMainPage = () => {
 
   useEffect(()=>{
     const fetchData = async()=>{
-      jwtAxios.get(`http://192.168.0.8:8080/user/info`)
+      jwtAxios.get(`${SERVER_URL}/user/info`)
       .then(result=>{
         setEmail(result.data.email);
         setPhone(result.data.phone);
