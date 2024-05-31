@@ -46,19 +46,7 @@ const ProductPage = ({test}) => {
     queryFn: () => getAlcholType(mainCategory, subCategory),
   });
 
-  // console.log("서치쿼리 : ", searchCategory);
-
-  // @AREA @COMMENT Side-bar
-
   const sideParam = params.type;
-
-  // @AREA Search-bar Component
-
- 
-
-  // @AREA Search(검색) 관련
-  // API host
-
   const [searchData, setSearchData] = useState(initState);
 
   const SearchMutation = useMutation({
@@ -82,7 +70,6 @@ const ProductPage = ({test}) => {
 
   const handleChangeSearch = e => {
     setAlcoholSearch(prevValue => ({
-      ...prevValue,
       searchcontents: e.target.value,
     }));
   };
@@ -107,6 +94,7 @@ const ProductPage = ({test}) => {
   
   const [select, setSelect] = useState(selectInitState);
   const handleClickSelect = e => {
+    console.log("선택된 카테고리", e.target.value);
     setSelect(prevValue => ({
       ...prevValue,
       // category는 API가 없어서 임의로 넣은 변수
@@ -148,7 +136,7 @@ const ProductPage = ({test}) => {
       }));
       handleClickSearch();
     }
-  },[alcoholSearch.searchcontents])
+  },[])
 
   return (
     <ProductWrap>
@@ -165,9 +153,9 @@ const ProductPage = ({test}) => {
           searchPlaceholder="검색할 주류를 입력해주세요."
           onSearchClick={handleClickSearch}
           // @COMMENT Select Props
-          onSelectChange={e => handleClickSelect(e)}
+          // onSelectChange={e => handleClickSelect(e)}
           selectValue={select.category}
-          onRecentClick={handleClickRecent}
+          // onRecentClick={handleClickRecent}
         />
         {/* <ProSearchForm>
         <div className="search-wrap">
