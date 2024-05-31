@@ -69,6 +69,7 @@ const ProductPage = ({test}) => {
   });
 
   const handleChangeSearch = e => {
+    console.log(e.target.value);
     setAlcoholSearch(prevValue => ({
       searchcontents: e.target.value,
     }));
@@ -153,9 +154,9 @@ const ProductPage = ({test}) => {
           searchPlaceholder="검색할 주류를 입력해주세요."
           onSearchClick={handleClickSearch}
           // @COMMENT Select Props
-          // onSelectChange={e => handleClickSelect(e)}
+          onSelectChange={e => handleClickSelect(e)}
           selectValue={select.category}
-          // onRecentClick={handleClickRecent}
+          onRecentClick={handleClickRecent}
         />
         {/* <ProSearchForm>
         <div className="search-wrap">
