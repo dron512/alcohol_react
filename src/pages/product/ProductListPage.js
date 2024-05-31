@@ -17,10 +17,6 @@ import {
   ProListWrap,
   ProductWrap,
 } from "../../styles/product/proWrapCss";
-import { ProSearchForm } from "../../styles/common/searchCss";
-import { getCookie } from "../../util/cookieUtil";
-import jwtAxios from '../../util/jwtUtil';
-import { SERVER_URL } from '../../api/config';
 
 const ProductPage = ({test}) => {
   const { isLogin } = useCustomLogin();
@@ -34,7 +30,10 @@ const ProductPage = ({test}) => {
       picture: "",
     },
   ];
-
+  const searchInitState = {
+    searchcontents: "",
+  };
+  const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
   const { type, sub, search, MoveToSearch } = useCustomQuery();
   const params = { type, sub, search };
 
@@ -55,9 +54,7 @@ const ProductPage = ({test}) => {
 
   // @AREA Search-bar Component
 
-  const searchInitState = {
-    searchcontents: "",
-  };
+ 
 
   // @AREA Search(검색) 관련
   // API host
@@ -67,7 +64,6 @@ const ProductPage = ({test}) => {
   const SearchMutation = useMutation({
     mutationFn: search => nonSignAlcholSearch({ search }),
     onSuccess: result => {
-      console.log("axios result :", result);
       MoveToSearch(alcoholSearch.searchcontents);
       setSearchData(result);
     },
@@ -78,14 +74,12 @@ const ProductPage = ({test}) => {
   const UserSearchMutation = useMutation({
     mutationFn: search => SignAlcholSearch({ search }),
     onSuccess: result => {
-      console.log("jwtAxios result :", result);
       MoveToSearch(alcoholSearch.searchcontents);
       setSearchData(result);
     },
     onError: () => {},
   });
 
-  const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
   const handleChangeSearch = e => {
     setAlcoholSearch(prevValue => ({
       ...prevValue,
@@ -98,10 +92,8 @@ const ProductPage = ({test}) => {
   //   SearchMutation.mutate(alcoholSearch);
   // };
 
-  // 토큰있냐 없냐..에 따라 실행..?
   const handleClickSearch = () => {
     if (isLogin) {
-      console.log("일로왔냐");
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       SearchMutation.mutate(alcoholSearch);
@@ -112,6 +104,7 @@ const ProductPage = ({test}) => {
   const selectInitState = {
     category: "",
   };
+  
   const [select, setSelect] = useState(selectInitState);
   const handleClickSelect = e => {
     setSelect(prevValue => ({
@@ -155,7 +148,7 @@ const ProductPage = ({test}) => {
       }));
       handleClickSearch();
     }
-  },[])
+  },[alcoholSearch.searchcontents])
 
   return (
     <ProductWrap>

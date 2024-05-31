@@ -117,6 +117,7 @@ const Main = () => {
 
   const handleClickSearch = () => {
     navigate('/product/list?type=위스키&search='+searchText)
+    // UserSearchMutation();
     // if (isLogin) {
     //   UserSearchMutation.mutate(alcoholSearch);
     // } else {
@@ -138,10 +139,10 @@ const Main = () => {
   const UserSearchMutation = useMutation({
     mutationFn: search => SignAlcholSearch({ search }),
     onSuccess: result => {
-      // console.log("jwtAxios result :", result);
+      console.log("jwtAxios result :", result);
       console.log("search :", search);
-      // MoveToSearch(search);
-      // setSearchData(result);
+      MoveToSearch(search);
+      setSearchData(result);
     },
     onError: () => {},
   });

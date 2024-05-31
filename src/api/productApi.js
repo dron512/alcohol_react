@@ -35,13 +35,16 @@ export const postMainCate = async ({
 
 // Final
 export const getAlcholType = async (mainCategory, subCategory) => {
-  // console.log("m-axios  :", mainCategory);
-  // console.log("s-axios  :", subCategory);
+  console.log("m-axios  :", mainCategory);
+  console.log("s-axios  :", subCategory);
   let category;
   if (subCategory !== "") {
     category = subCategory;
   } else {
     category = mainCategory;
+  }
+  if(!category){
+    return
   }
   try {
     const response = await axios.get(
@@ -61,7 +64,6 @@ export const getAlcholType = async (mainCategory, subCategory) => {
 export const nonSignAlcholSearch = async ( {search} ) => {
   console.log("axios-data", search);
   try {
-    console.log('여기오나')
     const response = await axios.post(
       `${SERVER_URL}/main/anony/contents`,
       search,
@@ -94,10 +96,10 @@ export const nonSignAlcholSearch = async ( {search} ) => {
 // export const SignAlcholSearch = async () => {};
 
 export const SignAlcholSearch = async ({ search }) => {
+  console.log("axios-data", search); 
   try {
     const response = await jwtAxios.post(`${SERVER_URL}/main/contents`, search);
     if (response.status === 200) {
-      // console.log("result", response.data);
       const result = response.data;
       return result;
     } else {
