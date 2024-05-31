@@ -77,6 +77,7 @@ export const nonSignAlcholSearch = async ( {search} ) => {
       console.log("no");
     }
   } catch (error) {
+    console.log(error);
     // alert(error.response.data.errorMessage)
   }
 };
