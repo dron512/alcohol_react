@@ -47,7 +47,15 @@ const SignFindIdPwPage = () => {
           confirmButtonColor: `${Common.color.f900}`,
         })
       }).catch((error) => {
-        console.log(error);
+        console.log(error.response);
+        Swal.fire({
+          title:
+          `<p style='font-size:4rem;margin:1rem;'>EMAIL\n\n ${error.response.data}\n\n</p>`,
+          icon: "info",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        })
       });
     }
   };
