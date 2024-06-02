@@ -3,7 +3,7 @@ import { Button, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { readOnlySelector, useRecoilState } from "recoil";
-import { postSign } from "../../api/signUpApi";
+import { postKakaoSign, postSign } from "../../api/signUpApi";
 import { addressState } from "../../atom/addressState";
 import Address from "../../components/singup/Address";
 import { P20, SignWrap } from "../../styles/basic";
@@ -12,6 +12,7 @@ import { LoginTitle, LoginWrap } from "../../styles/login/loginCss";
 import { areaStyle, buttonPrimaryStyle } from "../../styles/sign/signArea";
 import { SERVER_URL } from '../../api/config';
 import Swal from 'sweetalert2';
+import useCustomLogin from '../../hooks/useCustomLogin';
 
 const initState = {
   email: "",
@@ -55,8 +56,9 @@ const SigninkakaoPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorCode, setErrorCode] = useState("");
 
+  const { saveAsCookie,moveToPath} = useCustomLogin();
+
   const loginAxios = async () => {
-    console.log('한번만 돌아줘')
     await axios
       .get("http://localhost:8080/kakao/login", {
         headers: {
@@ -66,8 +68,14 @@ const SigninkakaoPage = () => {
       })
       .then(res => {
         if(JSON.stringify(res.status).startsWith('2')){
-          setEmail(res.data.email);
-          setNickname(res.data.nickname)
+          if(res.data.startsWith('jwt')){
+            saveAsCookie(res.data.substr(3));
+            moveToPath("/")
+          }
+          else{
+            setEmail(res.data.email);
+            setNickname(res.data.nickname)
+          }  
         }
       })
       .catch(err => {
@@ -106,7 +114,7 @@ const SigninkakaoPage = () => {
       address2,
     };
     console.log("보냄" + JSON.stringify(values));
-    postSign({
+    postKakaoSign({
       values,
       address,
       withdrawStatus: "Y",
@@ -183,10 +191,10 @@ const SigninkakaoPage = () => {
               <Form.Item
                 name="nickname"
                 rules={[
-                  {
-                    required: true,
-                    message: "닉네임을 입력하세요.",
-                  },
+                  // {
+                  //   required: true,
+                  //   message: "닉네임을 입력하세요.",
+                  // },
                   {
                     pattern: /^[가-힣]{2,10}$/,
                     message: "한글로 2~10자 사이의 이름을 입력하세요.",
@@ -332,10 +340,10 @@ const SigninkakaoPage = () => {
                     type: "email",
                     message: "올바른 이메일 형식을 입력하세요.",
                   },
-                  {
-                    required: true,
-                    message: "이메일을 입력하세요.",
-                  },
+                  // {
+                  //   required: true,
+                  //   message: "이메일을 입력하세요.",
+                  // },
                   // {
                   //   pattern:
                   //     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i,

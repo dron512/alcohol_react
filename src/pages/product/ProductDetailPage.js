@@ -32,6 +32,8 @@ import ListLi3 from "../../components/detail/ListLi3";
 import axios from "axios";
 import jwtAxios from "../../util/jwtUtil";
 import { buypage } from "../../api/directPayApi";
+import Swal from 'sweetalert2';
+import { addressState } from '../../atom/addressState';
 
 export const items1 = ["1", "2", "3"];
 export const items2 = ["a", "b", "c"];
@@ -40,6 +42,7 @@ const DetailedItemPage = () => {
   const productItem = ProductItemData[0];
   const selectedPlace = useRecoilValue(placeState);
   const selectedStockNum = useRecoilValue(stockState);
+  const seletedAddress = useRecoilValue(addressState)
   const [count, setCount] = useState(1);
   const [isHeartChecked, setHeartChecked] = useState(1);
 
@@ -47,13 +50,26 @@ const DetailedItemPage = () => {
   const [isCartModalOpen, setCartModalOpen] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+  const [delivery,setDelivery] = useState("");
 
   const [userInfo, setUserInfo] = useState({
     nickname: "",
     phone: "",
     address: "",
+    address2: "",
     email: "",
   });
+  const [productInfo, setProductInfo] = useState([{
+    code: "",
+    name: "",
+    picture: "",
+    price: "",
+    amount: "",
+    market: "",
+    delivery: "",
+    address: "",
+    address2: ""
+  }]);
 
   // 모달관련
   const handleOpenMapModal = () => {
@@ -191,9 +207,41 @@ const DetailedItemPage = () => {
   // -------------------찜목록 추가 기능 end ---------------------------
   const buy = async () => {
     const info = await buypage();
+    if(selectedPlace === ""){
+      return Swal.fire('매장을 선택해 주세요.')
+    }
+    else if(delivery === ""){
+      return Swal.fire('배송방식을 선택해 주세요.')
+    }
+    if(delivery === 'Delivery'){
+      setProductInfo([{
+        code: serverData[0].code,
+        name: serverData[0].name,
+        picture: serverData[0].picture,
+        price: serverData[0].price,
+        amount: postCard.amount,
+        market: selectedPlace,
+        delivery: delivery,
+        address: info.address + ' ' + info.address2
+      }])
+    }
+    else if(delivery === 'PickUp'){
+      setProductInfo([{
+        code: serverData[0].code,
+        name: serverData[0].name,
+        picture: serverData[0].picture,
+        price: serverData[0].price,
+        amount: postCard.amount,
+        market: selectedPlace,
+        delivery: delivery,
+        address: seletedAddress
+      }])
+    }
+    
     setUserInfo({
       nickname: info.nickname,
       address: info.address,
+      address2: info.address2,
       phone: info.phone,
       email: info.email,
     });
@@ -201,9 +249,8 @@ const DetailedItemPage = () => {
 
   useEffect(() => {
     if(userInfo.nickname !== ''){
-      navigate("/directpay/buy", { state: { info: userInfo } });
+      navigate("/directpay/buy", { state: { info: userInfo,productInfo: productInfo } });
     }
-    
 }, [userInfo]);
 
   return (
@@ -261,9 +308,11 @@ const DetailedItemPage = () => {
                     fontSize: "16px",
                     // borderRadius: "5px",
                   }}
+                  onChange={(e)=>{setDelivery(e.target.value)}}
                 >
-                  <option>픽업</option>
-                  <option>배송</option>
+                  <option value={''}>배송선택</option>
+                  <option value={'PickUp'}>픽업</option>
+                  <option value={'Delivery'}>배송</option>
                 </select>
               </li>
             </ul>

@@ -15,6 +15,8 @@ const initState = [
     division: "",
     address: "",
     purchaseday: "",
+    ordernumber: "",
+    picture: ""
   },
 ];
 
@@ -46,8 +48,8 @@ const OrderPickPage = () => {
     {
       title: "이미지",
       dataIndex: "name",
-      render: () => (
-        <img style={{ width: "80px" }} src="/images/moon.jpg" alt="리뷰 작성" />
+      render: (test,record) => (
+        <img style={{ width: "80px",height:"120px" }} src={record.picture} alt="리뷰 작성" />
       ),
     },
     {
@@ -64,7 +66,7 @@ const OrderPickPage = () => {
     },
     {
       title: "주문번호",
-      dataIndex: "orderNumber",
+      dataIndex: "ordernumber",
     },
     {
       title: "주문방식",

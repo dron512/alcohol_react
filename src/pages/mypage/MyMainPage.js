@@ -58,7 +58,7 @@ const MyMainPage = () => {
 
   useEffect(()=>{
     const fetchData = async()=>{
-      jwtAxios.get(`http://192.168.0.8:8080/user/info`)
+      jwtAxios.get(`${SERVER_URL}/user/info`)
       .then(result=>{
         console.log(result);
         setEmail(result.data.email);
