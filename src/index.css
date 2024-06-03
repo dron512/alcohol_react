@@ -52,28 +52,43 @@ h1 {
   border-top: 1px solid black;
 }
 
-.pay .buyinfo > *{
-  display: inline-block;
+.pay .buyinfo ul{
+  display: flex;
+  width: 100%;
+  height: 4rem;
 }
-.userinfo{
-  margin-left: 10%;
-  margin-right: 10%;
+.pay .buyinfo ul li:nth-child(1){
+  text-align: center;
+  width: 20%;
 }
-.product-info{
-  margin-right: 10%;
+.pay .buyinfo ul li:nth-child(2){
+  text-align: center;
+  width: 18%;
 }
-.product-name{
-  margin-right: 10%;
+.pay .buyinfo ul li:nth-child(3){
+  text-align: center;
+  width: 16%;
 }
-.product-count{
-  margin-right: 5%;
+.pay .buyinfo ul li:nth-child(4){
+  text-align: center;
+  width: 10%;
 }
-.product-price{
-  margin-right: 7%;
+.pay .buyinfo ul li:nth-child(5){
+  text-align: center;
+  width: 5%;
 }
-.product-market{
-  margin-right: 8%;
+.pay .buyinfo ul li:nth-child(6){
+  text-align: center;
+  width: 14%;
 }
+.pay .buyinfo ul li:nth-child(7){
+  text-align: center;
+  width: 6%;
+}
+.pay .buyinfo ul li h2{
+  line-height: 4rem;
+}
+
 
 .info{
   width: 100%;
@@ -90,14 +105,22 @@ h1 {
 }
 
 .product{
-  margin-top: 25px;
-  margin-bottom: 25px;
   display: inline-block;
   width: 75%;
   height: 220px;
   overflow-y: scroll;
 }
 
+.product-info{
+}
+.product-name{
+}
+.product-count{
+}
+.product-price{
+}
+.product-market{
+}
 .product-map{
   margin-bottom: 10px;
 }
@@ -144,7 +167,9 @@ h1 {
 }
 
 .paybtndiv{
-  text-align: center;
+  margin-top: 5px;
+  margin-left: 45%;
+  width: 200px;
 }
 .paybtn{
   margin-top: 50px;

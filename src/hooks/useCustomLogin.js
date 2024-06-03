@@ -31,6 +31,7 @@ const useCustomLogin = () => {
   const doLogin = async ({ loginParam }) => {
     const result = await postLogin({ loginParam });
     saveAsCookie(result);
+    window.scroll(0,0)
     moveToPath("/");
     // navigate("/main");
 
@@ -47,9 +48,18 @@ const useCustomLogin = () => {
   const doLogout = () => {
     removeCookie("member");
     resetSignState();
-    moveToPath("/");
+    const Rest_api_key = "94b443da7db84c565579d43ba563dd3f";
+    const LOGOUT_REDIRECT_URI = "http://localhost:3000/sign/kakao/logout";
+
+    const kakaoURLout = `https://kauth.kakao.com/oauth/logout?client_id=${Rest_api_key}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}`;
+
+    const handleLogout = () => {
+      window.location.href = kakaoURLout;
+    };
+    handleLogout();
+    // moveToPath("/");
     // 로그아웃이 되면 버튼업데이트를 위해 새로고침
-    window.location.reload();
+    // window.location.reload();
   };
 
   // 패스이동 기능

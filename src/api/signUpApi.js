@@ -46,6 +46,43 @@ export const postSign = async ({
   }
 };
 
+export const postKakaoSign = async ({
+  values,
+  address,
+  withdrawStatus,
+  successFn,
+  failFn,
+  errFn,
+}) => {
+  try {
+    const url = `${prefix}/login/create`;
+    if(values.gender === null || values.gender === ""){
+      return Swal.fire('성별을 선택해 주세요.')
+    }
+      const res = await axios.post(url, {
+        ...values,
+        address: address,
+        withdrawStatus: withdrawStatus, // 추가 정보 전달
+      });
+      const status = res.status.toString();
+      const httpSt = status.charAt(0);
+      if (httpSt === "2") {
+        return successFn(res.data);
+      }
+
+    else{
+      Swal.fire("인증번호 혹은 인증한 이메일과 같은 이메일인지 확인해 주세요.")
+    }
+    
+  } catch (error) {
+    if (error.request.readyState === 4) {
+      return failFn(error.response.data);
+    } else {
+      errFn("서버에러에요");
+    }
+  }
+};
+
 // export const postLogin = async ({ values, successFn, failFn, errFn }) => {
 //   try {
 //     const url = `${prefix}/login`;
