@@ -5,6 +5,7 @@ import { Common } from "../../styles/CommonCss";
 
 import { useNavigate } from "react-router";
 import useCustomMove from '../../hooks/useCustomMove';
+import { CardImage } from "../../styles/main/cardImageStlye";
 
 const initState = [
   {
@@ -39,7 +40,7 @@ const CardSet = ({ data }) => {
                 window.scrollTo(0, 0); // 페이지 상단으로 스크롤 이동
               }}
             >
-              <img
+              <CardImage
                 className="card-img"
                 src={picSrc}
                 alt={product.picture}

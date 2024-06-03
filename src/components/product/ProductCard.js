@@ -7,6 +7,7 @@ import { ProCardContainer } from "../../styles/product/proCardCss";
 import OptiPlaceholder from "../image-opti/OptiPlaceholder";
 import OptiWireframe from "../image-opti/OptiWireframe";
 import useCustomMove from "../../hooks/useCustomMove";
+import { CardImage } from "../../styles/main/cardImageStlye";
 
 const initState = [
   {
