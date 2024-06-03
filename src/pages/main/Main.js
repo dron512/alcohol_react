@@ -19,6 +19,7 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 import { useCustomQuery } from "../../hooks/useCustomQuery";
 import { useMutation } from "react-query";
 import RecentSearches from "./RecentSearches";
+import { CardImage } from "../../styles/main/cardImageStlye";
 
 const initState = [
   {
@@ -183,7 +184,7 @@ const Main = () => {
           <RecentSearches display={display}/>
         </div>
         <div style={{paddingTop:"300px"}}>
-          <img src="./images/banner.svg"></img>
+          <img style={{cursor:'pointer'}} src="./images/banner.svg"/>
         </div>
         <PickUpCard>
           <a
