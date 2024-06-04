@@ -175,6 +175,7 @@ export const getMarketPath = async ({ code }) => {
 
 export const postAddCart = async ({ postcard }) => {
   console.log("ax :", postcard);
+
   try {
     const response = await jwtAxios.post(
       `${SERVER_URL}/shoppingbasket`,

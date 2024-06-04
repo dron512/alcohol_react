@@ -35,6 +35,7 @@ import { buypage } from "../../api/directPayApi";
 import Swal from "sweetalert2";
 import { addressState } from "../../atom/addressState";
 import { SERVER_URL } from "../../api/config";
+import { useKakaoLoader } from "react-kakao-maps-sdk";
 
 export const items1 = ["1", "2", "3"];
 export const items2 = ["a", "b", "c"];
@@ -139,6 +140,7 @@ const DetailedItemPage = () => {
       finish: "",
       nation: "",
       picture: "",
+      picture2: "",
       reviewcacount: 0,
     },
   ];
@@ -210,9 +212,13 @@ const DetailedItemPage = () => {
   // console.log("stock num : ", selectedStockNum);
 
   const postCard = {
+    alcoholcode : code,
     stock: selectedStockNum,
+    // marketname,
+    marketname: selectedPlace,
     amount: count,
     price: serverData[0].price,
+    delivery
   };
   // console.log("ㅍㅋ : ", postCard);
 
@@ -268,21 +274,22 @@ const DetailedItemPage = () => {
     await jwtAxios
       .post(`${SERVER_URL}/detail/alcohol`, body, {})
       .then(res => {
-        console.log(res.data, "iikajdsilkjaslkdjaskl");
+        const data = [];
         for (let i = 0; i < res.data.length; i++) {
-          setReviewInfo([{
+          data.push({
             userNm: res.data[i].nickname,
             starCount: res.data[i].grade,
             review: res.data[i].writing,
             date: res.data[i].date,
-          }]);
+          })
         }
+        setReviewInfo(data);
       })
       .catch(e => {
         console.log(e);
       });
   };
-
+  
   useEffect(() => {
     if (userInfo.nickname !== "") {
       navigate("/directpay/buy", {
@@ -331,7 +338,7 @@ const DetailedItemPage = () => {
             </ul>
             <ul>
               {serverData ? (
-                <li>{selectedPlace}</li>
+                <li>{selectedPlace}&nbsp;</li>
               ) : (
                 // <div></div>
                 <li>판매처를 선택해주세요</li>
@@ -394,6 +401,13 @@ const DetailedItemPage = () => {
 
       {/* 상품 info */}
       <div>
+        <PB30>상세페이지</PB30>
+        <UlStyle>
+          <img style={{ width: "600px" }} src={serverData[0].picture2} />
+        </UlStyle>
+      </div>
+      <ItemLine/>
+      <div>
         <PB20>Tasting Note</PB20>
         <UlStyle>
           <ListLi taste={tastes} aroma={aromas} finish={finishs} />
@@ -419,12 +433,7 @@ const DetailedItemPage = () => {
         </UlStyle>
       </div>
       <ItemLine></ItemLine>
-      <div>
-        <PB30>상세페이지</PB30>
-        <UlStyle>
-          <img style={{ width: "600px" }} src={serverData[0].picture} />
-        </UlStyle>
-      </div>
+      
       {/* <PB30>여기에 상세페이지 </PB30> */}
 
       {/* 리뷰 목록 */}
@@ -433,7 +442,7 @@ const DetailedItemPage = () => {
         <MarginB40 />
         <PB20>리뷰({review})</PB20>
         <ItemLine
-          style={{ background: `${Common.color.p600}`, height: "2px" }}
+          style={{ background: `${Common.color.p600}`, height: "2px",margin:"10px 0 0 0" }}
         />
         {reviewInfo && reviewInfo.map((reviews, index) => {
           return (

@@ -32,21 +32,18 @@ const RvModal = ({ onClose, code }) => {
 
   const handleGradeChange = value => {
     setGradeData(value);
-    console.log("평점:", value);
   };
 
   const handleWritingChange = e => {
     setWritingData(e.target.value);
-    console.log("리뷰작성:", e.target.value);
   };
 
   const fetchData = () => {
     postReviewcreate({
       reivewParam: {
-        code: code.alcoholcode,
+        alcoholcode: code.alcoholcode,
         writing: writingData,
         grade: gradeData,
-        picture: "",
       },
       successFn,
       failFn,

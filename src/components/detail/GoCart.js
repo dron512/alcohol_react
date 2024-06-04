@@ -6,24 +6,21 @@ import { Common } from "../../styles/CommonCss";
 import { useParams } from "react-router-dom";
 import { useMutation } from "react-query";
 import { postAddCart } from "../../api/productApi";
+import Swal from "sweetalert2";
 
 export const GoMapModal = () => {
   const [isMapModalOpen, setMapModalOpen] = useState(false);
   const { code } = useParams();
-  console.log("ce : ", code);
   const handleOpenMapModal = () => {
     setMapModalOpen(true);
   };
-
   const handleCloseMapModal = () => {
     setMapModalOpen(false);
   };
-
-  // console.log("ff :", code);
   return (
     <div>
       {isMapModalOpen && <MapModal onClose={handleCloseMapModal} code={code} />}
-      <PlaceBt onClick={handleOpenMapModal}> 판매처 선택</PlaceBt>
+      <PlaceBt style={{fontSize:"2rem",height:"40px"}} onClick={handleOpenMapModal}> 판매처 선택</PlaceBt>
     </div>
   );
 };
@@ -33,13 +30,23 @@ export const GoCartModal = ({ postcard }) => {
   const [isCartModalOpen, setCartModalOpen] = useState(false);
   // 장바구니 넣기
   const addCartMutation = useMutation({
-    mutationFn: () => postAddCart({ postcard }),
+    mutationFn: () => {
+     
+      postAddCart({ postcard })
+    },
     onSuccess: () => {
       setCartModalOpen(true);
     },
   });
   const handleOpenCartModal = () => {
-    // console.log("ok", postcard);
+    console.log("일로오나"+postcard.delivery)
+    if (postcard.stock === 0) {
+      Swal.fire("매장을 선택해 주세요.")
+      return;
+    } else if (!postcard.delivery) {
+      Swal.fire("배송방식을 선택해 주세요.")
+      return;
+    }
     addCartMutation.mutate(postcard);
   };
 

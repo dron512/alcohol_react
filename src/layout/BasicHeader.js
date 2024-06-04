@@ -1,6 +1,6 @@
 import styled from "@emotion/styled/macro";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropNav from "../components/basic/DropNav";
 import NavDropdown from "../components/basic/DropNavNew";
 import UserDrop from "../components/basic/UserDrop";
@@ -12,7 +12,9 @@ import { atomSignState } from '../atom/loginState';
 import { removeCookie } from "../util/cookieUtil";
 
 
+
 const BasicHeader = () => {
+  const navigate = useNavigate();
   const { moveToLogin } = useCustomMove();
   const { doLogout, loginState, isLogin } = useCustomLogin();
   const resetSignState = useResetRecoilState(atomSignState);
@@ -80,6 +82,7 @@ const BasicHeader = () => {
                 <Link onClick={()=>{
                   removeCookie("member");
                   resetSignState();
+                  navigate('/');
                 }}>
                   <p>로그아웃</p>
                 </Link>
