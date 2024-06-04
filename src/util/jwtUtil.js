@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie, setCookie } from "./cookieUtil";
+import { getCookie, removeCookie, setCookie } from "./cookieUtil";
 import { SERVER_URL } from "../api/config";
 
 // intercepter 전용 axios 생성
@@ -31,6 +31,7 @@ const beforeReq = config => {
 
 // fail Request 요청보내서 실패했을 때
 const requestFail = err => {
+  // removeCookie("member");
   console.log("요청후 실패시 .... ", err);
   return Promise.reject(err);
 };
