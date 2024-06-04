@@ -281,7 +281,6 @@ const DetailedItemPage = () => {
       });
   };
 
-  getReview();
 
   useEffect(() => {
     if (userInfo.nickname !== "") {
@@ -289,7 +288,8 @@ const DetailedItemPage = () => {
         state: { info: userInfo, productInfo: productInfo },
       });
     }
-}, [userInfo]);
+    //     getReview();
+  }, []);
 
   return (
     <ItemWrap>
