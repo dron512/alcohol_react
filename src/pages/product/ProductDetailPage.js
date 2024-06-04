@@ -270,12 +270,12 @@ const DetailedItemPage = () => {
       .then(res => {
         console.log(res.data, "iikajdsilkjaslkdjaskl");
         for (let i = 0; i < res.data.length; i++) {
-          setReviewInfo({
+          setReviewInfo([{
             userNm: res.data[i].nickname,
             starCount: res.data[i].grade,
             review: res.data[i].writing,
             date: res.data[i].date,
-          });
+          }]);
         }
       })
       .catch(e => {
@@ -435,7 +435,7 @@ const DetailedItemPage = () => {
         <ItemLine
           style={{ background: `${Common.color.p600}`, height: "2px" }}
         />
-        {/* {reviewInfo.map((reviews, index) => {
+        {reviewInfo && reviewInfo.map((reviews, index) => {
           return (
             <ReviewProduct
               key={index}
@@ -443,27 +443,9 @@ const DetailedItemPage = () => {
               starCount={reviews.starCount}
               review={reviews.review}
               date={reviews.date}
-            ></ReviewProduct>
+            />
           );
-        })} */}
-        <ReviewProduct
-          userNm="나는고라니1"
-          starCount={4}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
-        <ReviewProduct
-          userNm="나는고라니2"
-          starCount={5}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
-        <ReviewProduct
-          userNm="나는고라니3"
-          starCount={3}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
+        })}
       </div>
     </ItemWrap>
   );
