@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getKakaoLoginLink } from "../../api/kakaoApi";
 import { postLogin } from "../../api/signUpApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
@@ -12,7 +12,6 @@ const initState = {
   email: "",
   password: "",
 };
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loginParam, setLoginParam] = useState(initState);
@@ -142,9 +141,9 @@ const LoginPage = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>이메일 저장하기</Checkbox>
               </Form.Item>
-              <Link className="login-form-forgot" to="/sign/FindIdPw">
-                이메일/ 비밀번호 찾기
-              </Link>
+              <a className="login-form-forgot" href="">
+                아이디/ 비밀번호 찾기
+              </a>
             </div>
           </Form.Item>
 

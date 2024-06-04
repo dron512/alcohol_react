@@ -18,13 +18,13 @@ const beforeReq = config => {
   }
 
   const accessToken = memberInfo;
+  console.log(accessToken);
   // 요청한 Request 에 headers 에 형식이 있어요.
   // jwt 액세스토큰을 붙일때 형식이 있어요.
   // config 는 요청한 axios 이고
   // 이곳에서는  요청한 axios 의 전처리를 합니다.
   // 이때 추가내용을 headers에 추가합니다.
   config.headers.Authorization = `Bearer ${accessToken}`;
-  config.headers["Content-Type"]= "application/json";
 
   return config;
 };
@@ -88,8 +88,6 @@ const responseFail = err => {
   console.log("Response Fail Err", err);
   return Promise.reject(err);
 };
-
-
 
 // axios 인터셉터 적용
 jwtAxios.interceptors.request.use(beforeReq, requestFail);

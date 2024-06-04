@@ -7,7 +7,7 @@ export const MainWrap = styled.div`
   /* width: 100%; */
 
   .main-header {
-    position: absolute;
+    position: relative;
     /* display: flex; */
     min-height: 300px;
     width: 100%;

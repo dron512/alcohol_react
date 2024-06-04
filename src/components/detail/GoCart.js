@@ -5,12 +5,14 @@ import CartModal from "../modal/CartModal";
 import { Common } from "../../styles/CommonCss";
 import { useParams } from "react-router-dom";
 import { useMutation } from "react-query";
-import { postAddCart } from "../../api/productApi";
+import { deleteAddCart, postAddCart } from "../../api/productApi";
+import { useSetRecoilState } from "recoil";
+import { cartCountState } from "../../atom/CountState";
 
 export const GoMapModal = () => {
   const [isMapModalOpen, setMapModalOpen] = useState(false);
+
   const { code } = useParams();
-  console.log("ce : ", code);
   const handleOpenMapModal = () => {
     setMapModalOpen(true);
   };
@@ -19,7 +21,6 @@ export const GoMapModal = () => {
     setMapModalOpen(false);
   };
 
-  // console.log("ff :", code);
   return (
     <div>
       {isMapModalOpen && <MapModal onClose={handleCloseMapModal} code={code} />}
@@ -31,15 +32,15 @@ export const GoMapModal = () => {
 //
 export const GoCartModal = ({ postcard }) => {
   const [isCartModalOpen, setCartModalOpen] = useState(false);
-  // 장바구니 넣기
+
   const addCartMutation = useMutation({
     mutationFn: () => postAddCart({ postcard }),
     onSuccess: () => {
       setCartModalOpen(true);
     },
   });
+
   const handleOpenCartModal = () => {
-    // console.log("ok", postcard);
     addCartMutation.mutate(postcard);
   };
 

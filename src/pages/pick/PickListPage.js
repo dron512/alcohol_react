@@ -71,16 +71,16 @@ const ProductPickPage = ({ titleTest, apiFunction }) => {
           <PB30>{titleTest}</PB30>
         </HeaderNavWrap>
         <MarginB40 />
-        {/* <HeaderNavPull /> */}
+        <HeaderNavPull />
         <MarginB40 />
         {/* 검색어, 정렬 */}
-        {/* <ProSearch
+        <ProSearch
           selecteOption={selecteOption}
           onChangeOption={handleOption}
           searchText={searchText}
           onSearchText={handleSearchText}
           onSubmit={handleClickSubmit}
-        /> */}
+        />
         <GridContainer>
           {pickData.map(product => (
             <ProductCard key={product.code} data={product} />

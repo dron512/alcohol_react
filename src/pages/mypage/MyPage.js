@@ -39,15 +39,6 @@ const MyPage = () => {
                 handleClick("info");
               }}
             />
-            <SideBt
-              sidenNm="비밀번호수정"
-              sidenId={10}
-              active={activeSide === "passwordCh"}
-              onClick={() => {
-                navigate("passwordCh");
-                handleClick("passwordCh");
-              }}
-            />
             <SideSubTitle sideSubTitle="쇼핑정보" />
             <SideBt
               sidenNm="주문배송조회"

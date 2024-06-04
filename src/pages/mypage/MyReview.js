@@ -1,5 +1,6 @@
 import { ConfigProvider, Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { MyreviewData, reviewData } from "../../mock/CrtRvwData";
 import { Common } from "../../styles/CommonCss";
 import { TableCustom } from "../../styles/common/tableCss";
 import RvModal, { RvDelete } from "../../components/mypage/RvModal";
@@ -31,8 +32,8 @@ const MyReview = () => {
   const handleShowModal = index => {
     setShowModal(true);
     setModalKey(index);
+    console.log("모달로 전달되는 코드 값:", index);
   };
-  
   useEffect(() => {
     getReviewList({
       successFn: data => {
@@ -47,6 +48,7 @@ const MyReview = () => {
     });
   }, []);
 
+  // 데이터 새로고치기 위해..만든 무언가..
   const fetchData = () => {
     getReviewList({
       successFn: data => {
@@ -96,7 +98,7 @@ const MyReview = () => {
     {
       title: "내용",
       dataIndex: "content",
-      render: (text, record,index) => (
+      render: (text, record) => (
         <div
           style={{
             width: "600px",

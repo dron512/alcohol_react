@@ -115,6 +115,7 @@ const BasicHeader = () => {
                   alt="heart"
                 />
               </Link>
+
               <UserDrop />
             </div>
           </div>
