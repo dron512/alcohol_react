@@ -9,19 +9,16 @@ import {
 } from "../../styles/detail/mapModalPlaceCss";
 import { placeState } from "../../atom/placeState";
 import { stockState } from "../../atom/stockState";
-import { addressState } from '../../atom/addressState';
 
 const MapPlaceInfo = ({ place, onClose }) => {
   const [selectedPlaceName, setSelectedPlaceName] = useRecoilState(placeState);
   const [selectedStockNum, setSelectedStockNum] = useRecoilState(stockState);
-  const [selectedAddress, setSelectedAddress] = useRecoilState(addressState);
   const handleClick = () => {
     setSelectedPlaceName(place.marketname);
     setSelectedStockNum(place.stocknumber);
-    setSelectedAddress(place.address)
     onClose();
   };
-  console.log("ffff ff :", place);
+
   return (
     <div>
       <PlaceWrap

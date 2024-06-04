@@ -8,7 +8,6 @@ import directPayRouter from "./directPayRouter";
 import testRouter from "./testRouter";
 import pickProductRouter from "./pickProductRouter";
 import Loading from "../components/common/Loading";
-import PayCallbackPage from '../pages/directpay/PayCallbackPage';
 
 // Main-Page
 const MainPage = lazy(() => import("../pages/main/Main"));
@@ -117,14 +116,6 @@ const router = createBrowserRouter([
       </Suspense>
     ),
     children: directPayRouter(),
-  },
-  {
-    path: "/callback/",
-    element: (
-      <Suspense fallback={<div>Loading</div>}>
-        <PayCallbackPage />
-      </Suspense>
-    ),
   },
   // Product-test-router
   {

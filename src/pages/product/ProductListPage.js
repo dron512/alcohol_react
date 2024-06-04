@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import {
   SignAlcholSearch,
@@ -17,13 +17,13 @@ import {
   ProListWrap,
   ProductWrap,
 } from "../../styles/product/proWrapCss";
+import { ProSearchForm } from "../../styles/common/searchCss";
+import { getCookie } from "../../util/cookieUtil";
+import jwtAxios from "../../util/jwtUtil";
+import { SERVER_URL } from "../../api/config";
 
-
-const ProductPage = ({test}) => {
+const ProductPage = ({ test }) => {
   const { isLogin } = useCustomLogin();
-  const { type, sub, search, MoveToSearch } = useCustomQuery();
-  const params = { type, sub, search };
-
   // @AREA  이 부분은 테스트용
   const initState = [
     {
@@ -34,10 +34,9 @@ const ProductPage = ({test}) => {
       picture: "",
     },
   ];
-  const searchInitState = {
-    searchcontents: search,
-  };
-  const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
+
+  const { type, sub, search, MoveToSearch } = useCustomQuery();
+  const params = { type, sub, search };
 
   const mainCategory = `${params.type}`;
   const subCategory = `${params.sub}`;
@@ -48,12 +47,27 @@ const ProductPage = ({test}) => {
     queryFn: () => getAlcholType(mainCategory, subCategory),
   });
 
+  // console.log("서치쿼리 : ", searchCategory);
+
+  // @AREA @COMMENT Side-bar
+
   const sideParam = params.type;
+
+  // @AREA Search-bar Component
+
+  const searchInitState = {
+    searchcontents: "",
+  };
+
+  // @AREA Search(검색) 관련
+  // API host
+
   const [searchData, setSearchData] = useState(initState);
 
   const SearchMutation = useMutation({
     mutationFn: search => nonSignAlcholSearch({ search }),
     onSuccess: result => {
+      console.log("axios result :", result);
       MoveToSearch(alcoholSearch.searchcontents);
       setSearchData(result);
     },
@@ -64,14 +78,17 @@ const ProductPage = ({test}) => {
   const UserSearchMutation = useMutation({
     mutationFn: search => SignAlcholSearch({ search }),
     onSuccess: result => {
+      console.log("jwtAxios result :", result);
       MoveToSearch(alcoholSearch.searchcontents);
       setSearchData(result);
     },
     onError: () => {},
   });
 
-  const handleChangeSearch =  e => {
+  const [alcoholSearch, setAlcoholSearch] = useState(searchInitState);
+  const handleChangeSearch = e => {
     setAlcoholSearch(prevValue => ({
+      ...prevValue,
       searchcontents: e.target.value,
     }));
   };
@@ -81,6 +98,7 @@ const ProductPage = ({test}) => {
   //   SearchMutation.mutate(alcoholSearch);
   // };
 
+  // 토큰있냐 없냐..에 따라 실행..?
   const handleClickSearch = () => {
     if (isLogin) {
       UserSearchMutation.mutate(alcoholSearch);
@@ -93,19 +111,17 @@ const ProductPage = ({test}) => {
   const selectInitState = {
     category: "",
   };
-  
   const [select, setSelect] = useState(selectInitState);
   const handleClickSelect = e => {
-    console.log("선택된 카테고리", e.target.value);
     setSelect(prevValue => ({
       ...prevValue,
       // category는 API가 없어서 임의로 넣은 변수
       category: e.target.value,
     }));
-    console.log("선택된 카테고리", select);
   };
 
   // 최근 검색어
+
   const { data: recentData, refetch } = useQuery({
     queryKey: [],
     queryFn: () => {
@@ -118,9 +134,8 @@ const ProductPage = ({test}) => {
 
   // const recentData = data;
   // recentData => 일딴 회원기준으로 데이터는 나옴
-  console.log("검색어 결과 ", recentData);
+
   const handleClickRecent = () => {
-    console.log("검색바 클릭");
     // setRecentFlag(recnetFlag);
     refetch();
   };
@@ -129,20 +144,20 @@ const ProductPage = ({test}) => {
     setSearchText(event.target.value);
   };
 
-  useEffect(()=>{
-    if(search){
+  useEffect(() => {
+    if (search) {
       setAlcoholSearch(prevValue => ({
         ...prevValue,
         searchcontents: search,
       }));
       handleClickSearch();
     }
-  },[])
+  }, []);
 
   return (
     <ProductWrap>
       {/* Side-bar Component */}
-      { <ProductSidebar type={sideParam} search={search} />}
+      {<ProductSidebar type={sideParam} search={search} />}
 
       {/* Search-bar Component */}
       <ProListWrap>
@@ -193,7 +208,7 @@ const ProductPage = ({test}) => {
         {/* Content Component (Card) */}
         <GridContainer>
           {productData?.map((product, index) => {
-              return <ProductCard key={index} data={product} />;
+            return <ProductCard key={index} data={product} />;
           })}
 
           {/* Search - Component */}

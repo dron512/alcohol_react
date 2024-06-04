@@ -26,7 +26,6 @@ export const getDelivery = async ({ successFn, failFn, errorFn }) => {
 
     const status = res.status.toString();
     if (status.charAt(0) === "2") {
-      console.log(res.data,'123ui123hjj12lk3hkj')
       successFn(res.data);
     } else {
       failFn("메인 모스트 데이터 불러오기 실패");

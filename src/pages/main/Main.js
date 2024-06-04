@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   getMostProduct,
@@ -18,8 +18,9 @@ import { SignAlcholSearch, nonSignAlcholSearch } from "../../api/productApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import { useCustomQuery } from "../../hooks/useCustomQuery";
 import { useMutation } from "react-query";
-import RecentSearches from "./RecentSearches";
-import { CardImage } from "../../styles/main/cardImageStlye";
+import { GridContainer } from "../../styles/product/proWrapCss";
+import ProductCard from "../../components/product/ProductCard";
+import ProductPage from '../product/ProductListPage';
 
 const initState = [
   {
@@ -54,11 +55,9 @@ const Main = () => {
   const [newdata, setNewData] = useState([]);
   const [randdata, setRandData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [display,setDisplay] = useState('none');
   const searchInitState = {
     searchcontents: "",
   };
-  const searchInput = useRef();
 
   useEffect(() => {
     getRandProduct({
@@ -100,13 +99,6 @@ const Main = () => {
         alert("서버상태 불안정 다음에 most 시도");
       },
     });
-    document.addEventListener("click", (event)=>{ 
-      if (
-        document.activeElement !== searchInput.current
-      ) {
-        setDisplay('none')
-      }
-    });
   }, []);
 
   //========================================
@@ -118,7 +110,6 @@ const Main = () => {
 
   const handleClickSearch = () => {
     navigate('/product/list?type=위스키&search='+searchText)
-    // UserSearchMutation();
     // if (isLogin) {
     //   UserSearchMutation.mutate(alcoholSearch);
     // } else {
@@ -140,13 +131,24 @@ const Main = () => {
   const UserSearchMutation = useMutation({
     mutationFn: search => SignAlcholSearch({ search }),
     onSuccess: result => {
-      console.log("jwtAxios result :", result);
+      // console.log("jwtAxios result :", result);
       console.log("search :", search);
-      MoveToSearch(search);
-      setSearchData(result);
+      // MoveToSearch(search);
+
+      // setSearchData(result);
     },
     onError: () => {},
   });
+  // ===================================================
+
+  // const search = async () => {
+  //   if(getCookie('member') !== undefined){
+  //     await SignAlcholSearch(searchText);
+  //   }else{
+  //     await nonSignAlcholSearch(searchText);
+  //   }
+
+  // }
 
   const searchWord = e => {
     setSearchText(e.target.value);
@@ -166,26 +168,20 @@ const Main = () => {
           >
             <div className="search-wrap">
               <input
-                ref={searchInput}
                 id="search"
                 type="text"
                 placeholder="검색어를 입력해주세요"
                 className="search-word"
                 onChange={searchWord}
-                onFocus={()=>{ 
-                  setDisplay('block');
-                } }
               ></input>
               <button className="search-bt" onClick={handleClickSearch}>
                 <img src="./images/search.png" />
               </button>
             </div>
           </div>
-          <RecentSearches display={display}/>
+          {/* <input type="button" className="search-bt" /> */}
         </div>
-        <div style={{paddingTop:"300px"}}>
-          <img style={{cursor:'pointer'}} src="./images/banner.svg"/>
-        </div>
+        <img src="./images/banner.svg"></img>
         <PickUpCard>
           <a
             className="pickCard2"
@@ -212,6 +208,7 @@ const Main = () => {
               if (isLogin) {
                 navigate(`pick/pick`);
                 window.scroll(0,0);
+
               }else{
                 alert('로그인 후 가능한 서비스입니다.')
                 navigate(`sign/in`);
