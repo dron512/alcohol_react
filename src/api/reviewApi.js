@@ -31,6 +31,7 @@ export const getReviewcheck = async ({ successFn, failFn, errorFn }) => {
       failFn("메인 리뷰 데이터 불러오기 실패");
     }
   } catch (error) {
+    console.log(error)
     errorFn(error);
   }
 };
@@ -43,6 +44,7 @@ export const postReviewcheck = async ({ successFn, failFn, errorFn }) => {
     const status = res.status.toString();
     if (status.charAt(0) === "2") {
       successFn(res.data);
+
     } else {
       failFn("메인 리뷰등록 데이터 불러오기 실패");
     }
@@ -57,20 +59,15 @@ export const postReviewcreate = async ({
   failFn,
   errorFn,
 }) => {
-  try {
-    const url = `${prefix}`;
-
-    const res = await jwtAxios.post(url, { ...reivewParam });
-
-    const status = res.status.toString();
-    if (status.charAt(0) === "2") {
-      successFn(res.data);
-    } else {
-      failFn("메인 리뷰등록 데이터 불러오기 실패");
-    }
-  } catch (error) {
-    errorFn(error);
-  }
+  console.log(reivewParam);
+  jwtAxios.post(`${SERVER_URL}/review`, { ...reivewParam })
+  .then(res => {
+    console.log(res);
+    window.location.reload();
+  }).catch(e => {
+    console.log(e);
+    failFn(e);
+  });
 };
 
 // export const deleteReview = async ({
@@ -96,18 +93,13 @@ export const postReviewcreate = async ({
 // };
 
 export const deleteReview = async ({ code, successFn, failFn, errorFn }) => {
-  try {
-    // const url = `${prefix}?code=${code.code}`;
-    const url = `${prefix}`;
-    const res = await jwtAxios.delete(url, { data: { alcohol: code } });
-
-    const status = res.status.toString();
-    if (status.charAt(0) === "2") {
-      successFn(res.data);
-    } else {
-      failFn("메인 모스트 데이터 불러오기 실패");
+  jwtAxios.delete(`${SERVER_URL}/review`, {data: {id: code}})
+  .then(res => {
+    console.log(res.data);
+    if(res.data==="리뷰가 삭제 되었습니다."){
+      successFn();
     }
-  } catch (error) {
-    errorFn(error);
-  }
+  }).catch(e => {
+    console.log(e);
+  });
 };

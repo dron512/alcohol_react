@@ -4,13 +4,15 @@ import { SideBar } from "../../styles/product/sideBarCss";
 import SideBt from "../basic/SideBt";
 import SideTitle from "../basic/SideTitle";
 
-const ProductSidebar = (type, search) => {
+const ProductSidebar = (type,search) => {
   // search
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search");
   // Type,sub-type
   const typeProps = type.type;
+
+  console.log("side-search 입니다. --------- ", searchQuery);
 
   const naviage = useNavigate();
   const [status, setStatus] = useState([]);
@@ -88,7 +90,7 @@ const ProductSidebar = (type, search) => {
     }
     console.log("result", resultColumn);
     setStatus(resultColumn);
-  }, [typeProps]);
+  }, []);
 
   const whiskeyColumn = ["WHISKEY", "ALL", "싱글몰트", "블렌디드", "버번"];
   const wineColumn = [
@@ -108,7 +110,6 @@ const ProductSidebar = (type, search) => {
       <SideTitle sideTitle={`${status?.[0]}`} />
       <hr />
       <div className="side-nav">
-        {/* {console.log(`activeSide ${activeSide}`)} */}
         <SideBt
           sidenNm={`${status?.[1]}`}
           sideId={1}

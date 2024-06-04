@@ -1,17 +1,21 @@
 import { Button, Form, Input, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { useRecoilState } from "recoil";
 import { Common } from "../../styles/CommonCss";
 import { postCodeStyle, themeObj } from "../../styles/sign/signArea";
 import { addressState } from "../../atom/addressState";
 
-const Address = ({ onAddressChange, name }) => {
+const Address = ({ onAddressChange, address:oladdress }) => {
   const [address, setAddress] = useRecoilState(addressState);
   const [last, setLast] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [values, setValues] = useState({}); // values 객체 추가
+
+  useEffect(()=>{
+    setAddress(oladdress);
+  },[]);
 
   const completeHandler = data => {
     const { address, zonecode } = data;

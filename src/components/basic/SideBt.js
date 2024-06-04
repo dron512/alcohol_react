@@ -3,6 +3,9 @@ import React from "react";
 import { Common } from "../../styles/CommonCss";
 
 const SideBt = ({ sidenNm, sideId, active, onClick }) => {
+  console.log(`active ${active}`);
+  console.log(`sidenNm ${active}`);
+  console.log(`onClick ${onClick}`);
   const SideBtStyled = styled.button`
     border: none;
     background: none;

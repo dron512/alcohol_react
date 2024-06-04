@@ -7,7 +7,7 @@ import Address from "../../components/singup/Address";
 import { Button, Form, Input, Select } from "antd";
 import { Common } from "../../styles/CommonCss";
 import { Link, useNavigate } from "react-router-dom";
-import SignOutModalPage from "./SignOutModalPage";
+
 
 const doSubmit = () => {
   jwtAxios.put(`${SERVER_URL}/user/update`, {
@@ -24,20 +24,25 @@ const doSubmit = () => {
 }
 
 const MyMainPage = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [nickname, setNickname] = useState();
+
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
 
   const navigate = useNavigate();
 
-  const doSignoutModal = ()=>{
-    setIsModalVisible(true);
-  }
+
+  const updateAddressInfo = ({ zonecode, address }) => {
+    // 주소 정보 업데이트
+    // setZonecode(zonecode);
+    setAddress(address);
+  };
 
   return (
     <div style={{ width: '100%' }}>
-      <SignOutModalPage 
-          setIsModalVisible={setIsModalVisible} 
-          isModalVisible={isModalVisible}
-           />
       <Form name="mypage_update">
         <MyPageContent>회원탈퇴</MyPageContent>
         <hr />
@@ -45,7 +50,7 @@ const MyMainPage = () => {
           <h2 style={{ padding: '0.7rem', fontSize: '2rem' }}>회원 탈퇴하시면 남은 적립금이 사라집니다 탈퇴하시겠습니까?</h2>
         </div>
         <div style={{display:'flex',justifyContent:"center"}}>
-          <Button onClick={doSignoutModal}
+          <Button onClick={() => { }}
             type="primary"
             style={{
               background: `${Common.color.f900}`,

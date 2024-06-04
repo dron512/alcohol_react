@@ -60,7 +60,6 @@ const CreateReview = () => {
       render: (text, record) => (
         <div>
           <p>{record.name}</p>
-          {/* <p>12121212-1212121</p> */}
         </div>
       ),
     },
@@ -79,8 +78,8 @@ const CreateReview = () => {
     {
       title: "리뷰작성",
       button: <button>ddldldd</button>,
-      render: (text, record) => (
-        <BasicBtR onClick={() => handleShowModal(record.code)}>
+      render: (text, record, index) => (
+        <BasicBtR onClick={() => handleShowModal(index)}>
           리뷰 작성
         </BasicBtR>
       ),
@@ -101,13 +100,14 @@ const CreateReview = () => {
       }}
     >
       <TableCustom
-        // rowSelection={rowSelection}
         columns={columns}
         dataSource={reviewListData}
         pagination={false}
       />
       {showModal && (
-        <RvModal onClose={handleCloseModal} code={reviewListData[0]} />
+        <RvModal 
+        onClose={handleCloseModal} 
+        code={reviewListData[modalKey]} />
       )}
     </ConfigProvider>
   );
