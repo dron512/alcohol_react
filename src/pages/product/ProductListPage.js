@@ -122,9 +122,7 @@ const ProductPage = ({test}) => {
 
   // const recentData = data;
   // recentData => 일딴 회원기준으로 데이터는 나옴
-  console.log("검색어 결과 ", recentData);
   const handleClickRecent = () => {
-    console.log("검색바 클릭");
     // setRecentFlag(recnetFlag);
     refetch();
   };

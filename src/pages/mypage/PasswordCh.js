@@ -103,7 +103,7 @@ const MyMainPage = () => {
         title:`<p style='font-size:4rem;margin:1rem;'>
         비밀번호 변경실패!!
         <br>
-        ${e.response.errorMessage}
+        ${e.response.data}
         </p>`,
         icon: "warning",
         width: 600,
