@@ -19,10 +19,10 @@ import {
 } from "../../styles/product/proWrapCss";
 import { ProSearchForm } from "../../styles/common/searchCss";
 import { getCookie } from "../../util/cookieUtil";
-import jwtAxios from "../../util/jwtUtil";
-import { SERVER_URL } from "../../api/config";
+import jwtAxios from '../../util/jwtUtil';
+import { SERVER_URL } from '../../api/config';
 
-const ProductPage = ({ test }) => {
+const ProductPage = ({test}) => {
   const { isLogin } = useCustomLogin();
   // @AREA  이 부분은 테스트용
   const initState = [
@@ -101,6 +101,7 @@ const ProductPage = ({ test }) => {
   // 토큰있냐 없냐..에 따라 실행..?
   const handleClickSearch = () => {
     if (isLogin) {
+      console.log("일로왔냐");
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       SearchMutation.mutate(alcoholSearch);
@@ -118,6 +119,7 @@ const ProductPage = ({ test }) => {
       // category는 API가 없어서 임의로 넣은 변수
       category: e.target.value,
     }));
+    console.log("선택된 카테고리", select);
   };
 
   // 최근 검색어
@@ -134,8 +136,9 @@ const ProductPage = ({ test }) => {
 
   // const recentData = data;
   // recentData => 일딴 회원기준으로 데이터는 나옴
-
+  console.log("검색어 결과 ", recentData);
   const handleClickRecent = () => {
+    console.log("검색바 클릭");
     // setRecentFlag(recnetFlag);
     refetch();
   };
@@ -144,20 +147,20 @@ const ProductPage = ({ test }) => {
     setSearchText(event.target.value);
   };
 
-  useEffect(() => {
-    if (search) {
+  useEffect(()=>{
+    if(search){
       setAlcoholSearch(prevValue => ({
         ...prevValue,
         searchcontents: search,
       }));
       handleClickSearch();
     }
-  }, []);
+  },[])
 
   return (
     <ProductWrap>
       {/* Side-bar Component */}
-      {<ProductSidebar type={sideParam} search={search} />}
+      { <ProductSidebar type={sideParam} search={search} />}
 
       {/* Search-bar Component */}
       <ProListWrap>
@@ -208,7 +211,7 @@ const ProductPage = ({ test }) => {
         {/* Content Component (Card) */}
         <GridContainer>
           {productData?.map((product, index) => {
-            return <ProductCard key={index} data={product} />;
+              return <ProductCard key={index} data={product} />;
           })}
 
           {/* Search - Component */}

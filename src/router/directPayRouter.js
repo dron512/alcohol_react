@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Navigate } from "react-router";
 
 const DirectPayPage = lazy(() => import("../pages/directpay/DirectPayPage"));
+const PayCallbackPage = lazy(() => import("../pages/directpay/PayCallbackPage"));
 
 const PayRouter = () => {
   return [

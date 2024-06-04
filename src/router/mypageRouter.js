@@ -1,6 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Navigate } from "react-router";
 
+const PasswordCh = lazy(() => import("../pages/mypage/PasswordCh"));
+const SignOutPage = lazy(() => import("../pages/mypage/SignOutPage"));
+
 const ReviewPage = lazy(() => import("../pages/mypage/ReviewPage"));
 const MyMainPage = lazy(() => import("../pages/mypage/MyMainPage"));
 const MyReviewPage = lazy(() => import("../pages/mypage/MyReview"));
@@ -16,6 +19,22 @@ const mypageRouter = () => {
       element: (
         <Suspense fallback={<div>Load..</div>}>
           <MyMainPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "signout",
+      element: (
+        <Suspense fallback={<div>Load..</div>}>
+          <SignOutPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "passwordCh",
+      element: (
+        <Suspense fallback={<div>Load..</div>}>
+          <PasswordCh />
         </Suspense>
       ),
     },

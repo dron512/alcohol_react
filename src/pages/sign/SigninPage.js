@@ -141,7 +141,7 @@ const LoginPage = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>이메일 저장하기</Checkbox>
               </Form.Item>
-              <a className="login-form-forgot" href="">
+              <a className="login-form-forgot" href="/sign/FindIdPw">
                 아이디/ 비밀번호 찾기
               </a>
             </div>

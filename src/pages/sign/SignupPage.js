@@ -9,6 +9,9 @@ import { P20, SignWrap } from "../../styles/basic";
 import { Common } from "../../styles/CommonCss";
 import { LoginTitle, LoginWrap } from "../../styles/login/loginCss";
 import { areaStyle, buttonPrimaryStyle } from "../../styles/sign/signArea";
+import axios from 'axios';
+import { SERVER_URL } from '../../api/config';
+import Swal from 'sweetalert2';
 
 // const initState = {
 //   email: "aaa@naver.com",
@@ -48,6 +51,11 @@ const SignupPage = () => {
   const [address, setAddress] = useRecoilState(addressState);
   const [values, setValues] = useState({});
   const [address2, setAddress2] = useState("");
+  const [authNum, setAuthNum] = useState("");
+  const [emailch, setEmailCh] = useState({
+    email:"",
+    auth:""
+  });
   const [errorMessage, setErrorMessage] = useState("");
   const [errorCode, setErrorCode] = useState("");
 
@@ -81,6 +89,8 @@ const SignupPage = () => {
       values,
       address,
       withdrawStatus: "Y",
+      emailch,
+      authNum,
       successFn,
       failFn,
       errorFn,
@@ -89,8 +99,10 @@ const SignupPage = () => {
 
   const successFn = data => {
     // console.log("successFn : ", data);
-    setMemberInfo(data);
-    navigate(`/sign/in`);
+      setMemberInfo(data);
+      Swal.fire("가입 완료!");
+      navigate(`/sign/in`);
+      window.scroll(0,0)
   };
 
   const failFn = data => {
@@ -112,7 +124,24 @@ const SignupPage = () => {
       ...prevState,
       address: address,
     }));
-  }, [address]);
+    console.log(emailch)
+  }, [address,emailch]);
+
+  const emailauth = async () =>{
+    const body = {
+      email : email
+    }
+    console.log(body)
+    await axios.post(`${SERVER_URL}/login/emailauth`,body,{
+    }).then(res => {
+      if(JSON.stringify(res.status).startsWith('2')){
+        setEmailCh({email:email,auth:res.data})
+        Swal.fire('인증번호가 발송됐습니다.')
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+  }
 
   return (
     <div>
@@ -251,9 +280,9 @@ const SignupPage = () => {
                       fontSize: "20px",
                       borderRadius: "20px",
                     }}
-                    placeholder="성별"
                     onClick={handleGenderChange}
                   >
+                    <Select.Option value="">성별</Select.Option>
                     <Select.Option value="FEMALE">여성</Select.Option>
                     <Select.Option value="MALE">남성</Select.Option>
                   </Select>
@@ -292,6 +321,7 @@ const SignupPage = () => {
               <P20 style={{ fontWeight: "bold", marginBottom: "20px" }}>
                 필수정보
               </P20>
+              <div style={{ display: "flex", width: 193 }}>
               <Form.Item
                 name="email"
                 rules={[
@@ -316,12 +346,41 @@ const SignupPage = () => {
               >
                 <Input
                   placeholder="이메일(대소문자를 확인해 주세요)"
-                  style={areaStyle}
+                  style={{ width: 520, height: 60, fontSize: "20px" }}
                   onChange={e => setEmail(e.target.value)}
                 />
                 {/* {errorMessage.includes("이메일") && (
                   <span style={{ color: "red" }}>{errorMessage}</span>
                 )} */}
+              </Form.Item>
+              <Form.Item>
+          <Button
+            type="button"
+            style={{
+              width: "110px",
+              height: "60px",
+              backgroundColor: `${Common.color.p900}`,
+              border: "none",
+              marginLeft: "8px",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "16px",
+            }}
+            onClick={emailauth}
+          >
+            인증하기
+          </Button>
+        </Form.Item>
+              </div>
+              <Form.Item
+                name="authnum"
+              >
+                <Input
+                  style={{ height: 60, fontSize: "20px" }}
+                  onChange={e => setAuthNum(e.target.value)}
+                  placeholder="인증번호입력"
+                />
+                <p>인증메일이 안오셨을 경우 이메일을 확인해 주세요.</p>
               </Form.Item>
               <Form.Item
                 name="password"
@@ -332,7 +391,7 @@ const SignupPage = () => {
                   },
                   {
                     pattern:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+                      /^(?=.*[a-zA-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
                     message:
                       "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야 합니다.",
                   },

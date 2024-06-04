@@ -79,16 +79,7 @@ export const BigButton = styled.button`
   height: 49px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 2rem;
-`;
-export const DeleteButton = styled.button`
-  color: #888888;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: normal;
-  text-decoration: underline;
+  font-size: 2rem
 `;
 export const SButton = styled.button`
   width: 80px;
