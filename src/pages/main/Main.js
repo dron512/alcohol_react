@@ -151,6 +151,11 @@ const Main = () => {
   const searchWord = e => {
     setSearchText(e.target.value);
   };
+  const activeEnter = (e) => {
+    if(e.key === "Enter") {
+      handleClickSearch();
+    }
+  }
 
   return (
     <BasicLayout>
@@ -172,6 +177,7 @@ const Main = () => {
                 placeholder="검색어를 입력해주세요"
                 className="search-word"
                 onChange={searchWord}
+                onKeyDown={(e) => activeEnter(e)}
                 onFocus={()=>{ 
                   setDisplay('block');
                 } }

@@ -7,14 +7,17 @@ import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import jwtAxios from '../../util/jwtUtil';
 import { SERVER_URL } from '../../api/config';
-import useCustomLogin from '../../hooks/useCustomLogin';
+import { removeCookie } from '../../util/cookieUtil';
+import {  useResetRecoilState } from "recoil";
+import { atomSignState } from '../../atom/loginState';
+
 
 const SignOutModalPage = ({ setIsModalVisible, isModalVisible }) => {
   const [password, setPassword] = useState('') // 비밀번호
   const [passwordCheck, setPasswordCheck] = useState('') // 비밀번호 확인
+  const resetSignState = useResetRecoilState(atomSignState);
 
   const navigate = useNavigate();
-  const { doLogout, loginState, isLogin } = useCustomLogin();
 
   const handleOk = () => {
     jwtAxios.get(`${SERVER_URL}/user/withdraw`,
@@ -29,9 +32,11 @@ const SignOutModalPage = ({ setIsModalVisible, isModalVisible }) => {
         confirmButtonColor: `${Common.color.f900}`,
       })
       .then(() => {
+        removeCookie("member");
+        resetSignState();
         setIsModalVisible(false);
-        doLogout();
         navigate('/');
+        window.scroll(0,0);
       });
     }).catch(e => {
       console.log(e);

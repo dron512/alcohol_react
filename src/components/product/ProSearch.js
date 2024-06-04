@@ -32,6 +32,9 @@ const ProSearch = ({
               onChange={onSearchChange}
               // 테스뚜
               onClick={onRecentClick}
+              onKeyDown={(e) => 
+                e.key === "Enter" ? onSearchClick() : null
+              }
             />
             <button className="search-bt" onClick={onSearchClick}>
               <img src={process.env.PUBLIC_URL + `/images/search.png`} />
