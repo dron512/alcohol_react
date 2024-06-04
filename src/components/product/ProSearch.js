@@ -32,6 +32,7 @@ const ProSearch = ({
               onChange={onSearchChange}
               // 테스뚜
               onClick={onRecentClick}
+              autoFocus="true"
               onKeyDown={(e) => 
                 e.key === "Enter" ? onSearchClick() : null
               }

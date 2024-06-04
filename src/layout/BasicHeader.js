@@ -7,11 +7,15 @@ import UserDrop from "../components/basic/UserDrop";
 import useCustomLogin from "../hooks/useCustomLogin";
 import useCustomMove from "../hooks/useCustomMove";
 import { Common } from "../styles/CommonCss";
+import {  useResetRecoilState } from "recoil";
+import { atomSignState } from '../atom/loginState';
+import { removeCookie } from "../util/cookieUtil";
+
 
 const BasicHeader = () => {
   const { moveToLogin } = useCustomMove();
-
   const { doLogout, loginState, isLogin } = useCustomLogin();
+  const resetSignState = useResetRecoilState(atomSignState);
 
   const HeaderWrap = styled.div`
     width: 100%;
@@ -73,7 +77,10 @@ const BasicHeader = () => {
             <div className="right-top-nav">
               {/* {console.log("아", loginState, isLogin)} */}
               {isLogin ? (
-                <Link onClick={doLogout}>
+                <Link onClick={()=>{
+                  removeCookie("member");
+                  resetSignState();
+                }}>
                   <p>로그아웃</p>
                 </Link>
               ) : (
