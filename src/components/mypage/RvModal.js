@@ -43,7 +43,7 @@ const RvModal = ({ onClose, code }) => {
   const fetchData = () => {
     postReviewcreate({
       reivewParam: {
-        alcohol: code.code,
+        code: code.alcoholcode,
         writing: writingData,
         grade: gradeData,
         picture: "",
@@ -141,16 +141,7 @@ const RvModal = ({ onClose, code }) => {
 export default RvModal;
 
 export const RvDelete = ({ onClose, code, refreshData }) => {
-  // const picCode = code => {
-  //   const picture = code?.picture;
-  //   if (picture) {
-  //     const extractedNumbers = (picture.match(/\d+/g) || []).join("");
-  //     // 첫 번째 자리 숫자가 0이면 제거
-  //     const cleanedNumbers = extractedNumbers.replace(/^0+/, "");
-  //     return cleanedNumbers;
-  //   }
-  // };
-  // const extractedNumbers = (code.picture.match(/\d+/g) || []).join("");
+  console.log("code", code);
   const picCodePk = (code.picture.match(/\d+/g) || [])
     .map(number => parseInt(number.replace(/^0+/, ""), 10)) // 첫 번째 자리 숫자가 0이면 제거
     .join("");
@@ -180,8 +171,6 @@ export const RvDelete = ({ onClose, code, refreshData }) => {
     <>
       <RvModalStyle>
         <ModalDeletWrap>
-          {console.log("삭제모달 pk값", code.picture)}
-          {console.log("삭제모달 pk값2222", picCodePk)}
           <ModalContent>
             <div className="modal-title">
               <p className="title">리뷰삭제</p>
@@ -212,7 +201,7 @@ export const RvDelete = ({ onClose, code, refreshData }) => {
             <SubmitBt>
               <BasicBtR
                 style={{ background: Common.color.f900 }}
-                onClick={() => fetchData(picCodePk)}
+                onClick={() => fetchData(code.id)}
               >
                 네
               </BasicBtR>

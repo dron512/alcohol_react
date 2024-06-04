@@ -6,6 +6,11 @@ import { buttonPrimaryStyle } from "../../styles/sign/signArea";
 import Address from "../../components/singup/Address";
 import { Button, Form, Input, Select } from "antd";
 import { Common } from "../../styles/CommonCss";
+import { useNavigate } from 'react-router';
+import { useResetRecoilState } from 'recoil';
+import { atomSignState } from '../../atom/loginState';
+import { removeCookie } from '../../util/cookieUtil';
+import Swal from "sweetalert2";
 
 
 const columns = [
@@ -64,6 +69,49 @@ const MyMainPage = () => {
   const [oldPw, setOldPw] = useState();
   const [newPw, setNewPw] = useState();
   const [newPwCon, setNewPwCon] = useState();
+  const [password, setPassword] = useState();
+  const [newPassword, setNewPassword] = useState();
+  const [passwordch, setPasswordch] = useState();
+
+  const navigate = useNavigate();
+  const resetSignState = useResetRecoilState(atomSignState);
+
+
+  const doSubmit = () => {
+    jwtAxios.put(`${SERVER_URL}/user/updatePw`, {
+      password,
+      newPassword,
+      passwordch
+    }).then(data => {
+      if (data.data === '비밀번호 수정이 완료되었습니다.') {
+        Swal.fire(
+          {
+          title:"<p style='font-size:4rem;margin:1rem;'>비밀번호 변경되었습니다.</p>",
+          icon: "info",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        });
+        removeCookie("member");
+        resetSignState();
+        navigate('/sign/in');
+      }
+    }).catch(e => {
+      console.log(e);
+      Swal.fire(
+        {
+        title:`<p style='font-size:4rem;margin:1rem;'>
+        비밀번호 변경실패!!
+        <br>
+        ${e.response.errorMessage}
+        </p>`,
+        icon: "warning",
+        width: 600,
+        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+        confirmButtonColor: `${Common.color.f900}`,
+      });
+    });
+  }
 
   return (
     <div style={{ width: '100%' }}>

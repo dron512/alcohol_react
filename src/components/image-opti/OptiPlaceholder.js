@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CardImage } from "../../styles/main/cardImageStlye";
 
 const OptiPlaceholder = ({
   src,
@@ -23,7 +24,7 @@ const OptiPlaceholder = ({
           {placeholder}
         </div>
       )}
-      <img
+      <CardImage
         src={src}
         alt={alt}
         style={{

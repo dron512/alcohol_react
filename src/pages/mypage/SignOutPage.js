@@ -8,7 +8,6 @@ import { Button, Form, Input, Select } from "antd";
 import { Common } from "../../styles/CommonCss";
 import { Link, useNavigate } from "react-router-dom";
 
-
 const columns = [
   {
     title: "이미지",

@@ -41,6 +41,7 @@ export const useCustomQuery = () => {
     navigate({ pathname: "../list", search: queryStr });
   };
   const MoveToSearch = Searchparam => {
+    console.log('이서브파람 = ',Searchparam)
     let queryStr = "";
     console.log("parameter : ", Searchparam);
     if (Searchparam) {

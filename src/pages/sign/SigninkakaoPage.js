@@ -60,22 +60,23 @@ const SigninkakaoPage = () => {
 
   const loginAxios = async () => {
     await axios
-      .get("http://localhost:8080/kakao/login", {
+      .get(`${SERVER_URL}/kakao/login`, {
         headers: {
           "Content-Type": "application/json",
           token: code,
         },
       })
       .then(res => {
-        if(JSON.stringify(res.status).startsWith('2')){
-          if(res.data.startsWith('jwt')){
-            saveAsCookie(res.data.substr(3));
-            moveToPath("/")
+        try{
+          if(JSON.stringify(res.status).startsWith('2')){
+            if(res.data.startsWith('jwt')){
+              saveAsCookie(res.data.substr(3));
+              moveToPath("/")
+            }
           }
-          else{
-            setEmail(res.data.email);
-            setNickname(res.data.nickname)
-          }  
+        }catch(e){
+          setEmail(res.data.email);
+          setNickname(res.data.nickname);
         }
       })
       .catch(err => {
