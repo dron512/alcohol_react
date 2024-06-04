@@ -6,14 +6,69 @@ import { buttonPrimaryStyle } from "../../styles/sign/signArea";
 import Address from "../../components/singup/Address";
 import { Button, Form, Input, Select } from "antd";
 import { Common } from "../../styles/CommonCss";
-import { json, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import { atomSignState } from "../../atom/loginState";
-import { removeCookie } from "../../util/cookieUtil";
-import { useResetRecoilState } from "recoil";
+import { useNavigate } from 'react-router';
+import { useResetRecoilState } from 'recoil';
+import { atomSignState } from '../../atom/loginState';
+import { removeCookie } from '../../util/cookieUtil';
+import Swal from "sweetalert2";
+
+
+const columns = [
+  {
+    title: "이미지",
+    dataIndex: "name",
+    render: () => (
+      <img style={{ width: "80px" }} src="/images/moon.jpg" alt="리뷰 작성" />
+    ),
+  },
+  {
+    title: "제품명 | 주문번호",
+    dataIndex: "test",
+    render: () => (
+      <div>
+        <p>하여튼 주문명</p>
+        <p>12121212-1212121</p>
+      </div>
+    ),
+  },
+  {
+    title: "주문일자",
+    dataIndex: "date",
+  },
+  {
+    title: "매장명",
+    dataIndex: "math",
+  },
+  {
+    title: "주문방식",
+    dataIndex: "order",
+  },
+  {
+    title: "리뷰작성",
+    button: <button>ddldldd</button>,
+    render: () => <button>리뷰 작성</button>,
+  },
+];
+
+const doSubmit = () => {
+  jwtAxios.put(`${SERVER_URL}/user/update`, {
+    "nickname": "dfff",
+    "password": "a123456!",
+    "phone": "01056215621",
+    "address": "주소",
+    "address2": "상세주소"
+  }).then(data => {
+    console.log(data);
+  }).catch(e => {
+    console.log(e);
+  });
+}
 
 const MyMainPage = () => {
 
+  const [oldPw, setOldPw] = useState();
+  const [newPw, setNewPw] = useState();
+  const [newPwCon, setNewPwCon] = useState();
   const [password, setPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [passwordch, setPasswordch] = useState();
@@ -69,33 +124,30 @@ const MyMainPage = () => {
             <div style={{ width: '100%' }}>
               <Form.Item>
                 <Input placeholder='현재비밀번호'
-                // type="password"
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
-                  }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                  }} value={oldPw} onChange={(e) => setOldPw(e.target.value)} />
               </Form.Item>
               <Form.Item>
                 <Input placeholder='새로운비밀번호'
-                // type="password"
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
                   }}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)} />
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)} />
               </Form.Item>
             </div>
             <div style={{ flexGrow: 1 }}>
               <Form.Item>
                 <Input placeholder='새로운비밀번호확인'
-                // type="password"
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
                   }}
-                  value={passwordch}
-                  onChange={(e) => setPasswordch(e.target.value)} />
+                  value={newPwCon}
+                  onChange={(e) => setNewPwCon(e.target.value)} />
               </Form.Item>
             </div>
           </div>

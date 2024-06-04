@@ -64,6 +64,7 @@ export const getAlcholType = async (mainCategory, subCategory) => {
 export const nonSignAlcholSearch = async ( {search} ) => {
   console.log("axios-data", search);
   try {
+    console.log('여기오나')
     const response = await axios.post(
       `${SERVER_URL}/main/anony/contents`,
       search,
@@ -77,6 +78,7 @@ export const nonSignAlcholSearch = async ( {search} ) => {
       console.log("no");
     }
   } catch (error) {
+    alert(error.response.data.errorMessage)
     console.log(error);
     // alert(error.response.data.errorMessage)
   }

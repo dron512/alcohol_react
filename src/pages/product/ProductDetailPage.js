@@ -43,7 +43,7 @@ const DetailedItemPage = () => {
   const productItem = ProductItemData[0];
   const selectedPlace = useRecoilValue(placeState);
   const selectedStockNum = useRecoilValue(stockState);
-  const seletedAddress = useRecoilValue(addressState)
+  const seletedAddress = useRecoilValue(addressState);
   const [count, setCount] = useState(1);
   const [isHeartChecked, setHeartChecked] = useState(1);
 
@@ -269,18 +269,19 @@ const DetailedItemPage = () => {
       .post(`${SERVER_URL}/detail/alcohol`, body, {})
       .then(res => {
         console.log(res.data, "iikajdsilkjaslkdjaskl");
-        setReviewInfo({
-          userNm: "",
-          starCount: res.data.grade,
-          review: res.data.writing,
-          date: "",
-        });
+        for (let i = 0; i < res.data.length; i++) {
+          setReviewInfo([{
+            userNm: res.data[i].nickname,
+            starCount: res.data[i].grade,
+            review: res.data[i].writing,
+            date: res.data[i].date,
+          }]);
+        }
       })
       .catch(e => {
         console.log(e);
       });
   };
-
 
   useEffect(() => {
     if (userInfo.nickname !== "") {
@@ -288,8 +289,8 @@ const DetailedItemPage = () => {
         state: { info: userInfo, productInfo: productInfo },
       });
     }
-    //     getReview();
-  }, []);
+    getReview();
+  }, [userInfo]);
 
   return (
     <ItemWrap>
@@ -330,7 +331,7 @@ const DetailedItemPage = () => {
             </ul>
             <ul>
               {serverData ? (
-                <li>{selectedPlace}&nbsp;</li>
+                <li>{selectedPlace}</li>
               ) : (
                 // <div></div>
                 <li>판매처를 선택해주세요</li>
@@ -393,13 +394,6 @@ const DetailedItemPage = () => {
 
       {/* 상품 info */}
       <div>
-        <PB30>상세페이지</PB30>
-        <UlStyle>
-          <img style={{ width: "600px" }} src={serverData[0].picture} />
-        </UlStyle>
-      </div>
-      <ItemLine />
-      <div>
         <PB20>Tasting Note</PB20>
         <UlStyle>
           <ListLi taste={tastes} aroma={aromas} finish={finishs} />
@@ -409,6 +403,7 @@ const DetailedItemPage = () => {
         </UlStyle>
       </div>
       <ItemLine />
+
       <div>
         <PB20>Information</PB20>
         <UlStyle>
@@ -424,6 +419,12 @@ const DetailedItemPage = () => {
         </UlStyle>
       </div>
       <ItemLine></ItemLine>
+      <div>
+        <PB30>상세페이지</PB30>
+        <UlStyle>
+          <img style={{ width: "600px" }} src={serverData[0].picture} />
+        </UlStyle>
+      </div>
       {/* <PB30>여기에 상세페이지 </PB30> */}
 
       {/* 리뷰 목록 */}
@@ -434,24 +435,17 @@ const DetailedItemPage = () => {
         <ItemLine
           style={{ background: `${Common.color.p600}`, height: "2px" }}
         />
-        <ReviewProduct
-          userNm="나는고라니1"
-          starCount={4}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
-        <ReviewProduct
-          userNm="나는고라니2"
-          starCount={5}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
-        <ReviewProduct
-          userNm="나는고라니3"
-          starCount={3}
-          review="아주좋아요"
-          date="2020 - 20 - 20"
-        />
+        {reviewInfo && reviewInfo.map((reviews, index) => {
+          return (
+            <ReviewProduct
+              key={index}
+              userNm={reviews.userNm}
+              starCount={reviews.starCount}
+              review={reviews.review}
+              date={reviews.date}
+            />
+          );
+        })}
       </div>
     </ItemWrap>
   );

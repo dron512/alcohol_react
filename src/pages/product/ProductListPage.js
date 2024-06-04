@@ -17,7 +17,10 @@ import {
   ProListWrap,
   ProductWrap,
 } from "../../styles/product/proWrapCss";
-
+import { ProSearchForm } from "../../styles/common/searchCss";
+import { getCookie } from "../../util/cookieUtil";
+import jwtAxios from '../../util/jwtUtil';
+import { SERVER_URL } from '../../api/config';
 
 const ProductPage = ({test}) => {
   const { isLogin } = useCustomLogin();
@@ -83,6 +86,7 @@ const ProductPage = ({test}) => {
 
   const handleClickSearch = () => {
     if (isLogin) {
+      console.log("일로왔냐");
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       SearchMutation.mutate(alcoholSearch);
