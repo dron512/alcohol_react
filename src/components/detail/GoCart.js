@@ -23,7 +23,7 @@ export const GoMapModal = () => {
   return (
     <div>
       {isMapModalOpen && <MapModal onClose={handleCloseMapModal} code={code} />}
-      <PlaceBt onClick={handleOpenMapModal}> 판매처 선택</PlaceBt>
+      <PlaceBt style={{fontSize:'2rem',height:'40px'}} onClick={handleOpenMapModal}> 판매처 선택</PlaceBt>
     </div>
   );
 };

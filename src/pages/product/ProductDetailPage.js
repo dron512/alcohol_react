@@ -32,8 +32,9 @@ import ListLi3 from "../../components/detail/ListLi3";
 import axios from "axios";
 import jwtAxios from "../../util/jwtUtil";
 import { buypage } from "../../api/directPayApi";
-import Swal from 'sweetalert2';
-import { addressState } from '../../atom/addressState';
+import Swal from "sweetalert2";
+import { addressState } from "../../atom/addressState";
+import { SERVER_URL } from "../../api/config";
 
 export const items1 = ["1", "2", "3"];
 export const items2 = ["a", "b", "c"];
@@ -42,7 +43,7 @@ const DetailedItemPage = () => {
   const productItem = ProductItemData[0];
   const selectedPlace = useRecoilValue(placeState);
   const selectedStockNum = useRecoilValue(stockState);
-  const seletedAddress = useRecoilValue(addressState)
+  const seletedAddress = useRecoilValue(addressState);
   const [count, setCount] = useState(1);
   const [isHeartChecked, setHeartChecked] = useState(1);
 
@@ -50,7 +51,7 @@ const DetailedItemPage = () => {
   const [isCartModalOpen, setCartModalOpen] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [delivery,setDelivery] = useState("");
+  const [delivery, setDelivery] = useState("");
 
   const [userInfo, setUserInfo] = useState({
     nickname: "",
@@ -59,16 +60,25 @@ const DetailedItemPage = () => {
     address2: "",
     email: "",
   });
-  const [productInfo, setProductInfo] = useState([{
-    code: "",
-    name: "",
-    picture: "",
-    price: "",
-    amount: "",
-    market: "",
-    delivery: "",
-    address: "",
-    address2: ""
+  const [productInfo, setProductInfo] = useState([
+    {
+      code: "",
+      name: "",
+      picture: "",
+      price: "",
+      amount: "",
+      market: "",
+      delivery: "",
+      address: "",
+      address2: "",
+    },
+  ]);
+
+  const [reviewInfo,setReviewInfo] = useState([{
+          userNm:"",
+          starCount:"",
+          review:"",
+          date:""
   }]);
 
   // 모달관련
@@ -207,37 +217,39 @@ const DetailedItemPage = () => {
   // -------------------찜목록 추가 기능 end ---------------------------
   const buy = async () => {
     const info = await buypage();
-    if(selectedPlace === ""){
-      return Swal.fire('매장을 선택해 주세요.')
+    if (selectedPlace === "") {
+      return Swal.fire("매장을 선택해 주세요.");
+    } else if (delivery === "") {
+      return Swal.fire("배송방식을 선택해 주세요.");
     }
-    else if(delivery === ""){
-      return Swal.fire('배송방식을 선택해 주세요.')
+    if (delivery === "Delivery") {
+      setProductInfo([
+        {
+          code: serverData[0].code,
+          name: serverData[0].name,
+          picture: serverData[0].picture,
+          price: serverData[0].price,
+          amount: postCard.amount,
+          market: selectedPlace,
+          delivery: delivery,
+          address: info.address + " " + info.address2,
+        },
+      ]);
+    } else if (delivery === "PickUp") {
+      setProductInfo([
+        {
+          code: serverData[0].code,
+          name: serverData[0].name,
+          picture: serverData[0].picture,
+          price: serverData[0].price,
+          amount: postCard.amount,
+          market: selectedPlace,
+          delivery: delivery,
+          address: seletedAddress,
+        },
+      ]);
     }
-    if(delivery === 'Delivery'){
-      setProductInfo([{
-        code: serverData[0].code,
-        name: serverData[0].name,
-        picture: serverData[0].picture,
-        price: serverData[0].price,
-        amount: postCard.amount,
-        market: selectedPlace,
-        delivery: delivery,
-        address: info.address + ' ' + info.address2
-      }])
-    }
-    else if(delivery === 'PickUp'){
-      setProductInfo([{
-        code: serverData[0].code,
-        name: serverData[0].name,
-        picture: serverData[0].picture,
-        price: serverData[0].price,
-        amount: postCard.amount,
-        market: selectedPlace,
-        delivery: delivery,
-        address: seletedAddress
-      }])
-    }
-    
+
     setUserInfo({
       nickname: info.nickname,
       address: info.address,
@@ -247,11 +259,37 @@ const DetailedItemPage = () => {
     });
   };
 
+  const getReview = async () => {
+    const body = {
+      code: detailParam.code,
+    };
+    await jwtAxios
+      .post(`${SERVER_URL}/detail/alcohol`, body,{
+
+      })
+      .then(res => {
+        console.log(res.data, "iikajdsilkjaslkdjaskl");
+        setReviewInfo({
+          userNm:"",
+          starCount:res.data.grade,
+          review:res.data.writing,
+          date:""
+        })
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  getReview();
+
   useEffect(() => {
-    if(userInfo.nickname !== ''){
-      navigate("/directpay/buy", { state: { info: userInfo,productInfo: productInfo } });
+    if (userInfo.nickname !== "") {
+      navigate("/directpay/buy", {
+        state: { info: userInfo, productInfo: productInfo },
+      });
     }
-}, [userInfo]);
+  }, [userInfo]);
 
   return (
     <ItemWrap>
@@ -292,7 +330,7 @@ const DetailedItemPage = () => {
             </ul>
             <ul>
               {serverData ? (
-                <li>{selectedPlace}</li>
+                <li>{selectedPlace}&nbsp;</li>
               ) : (
                 // <div></div>
                 <li>판매처를 선택해주세요</li>
@@ -308,11 +346,13 @@ const DetailedItemPage = () => {
                     fontSize: "16px",
                     // borderRadius: "5px",
                   }}
-                  onChange={(e)=>{setDelivery(e.target.value)}}
+                  onChange={e => {
+                    setDelivery(e.target.value);
+                  }}
                 >
-                  <option value={''}>배송선택</option>
-                  <option value={'PickUp'}>픽업</option>
-                  <option value={'Delivery'}>배송</option>
+                  <option value={""}>배송선택</option>
+                  <option value={"PickUp"}>픽업</option>
+                  <option value={"Delivery"}>배송</option>
                 </select>
               </li>
             </ul>
@@ -353,6 +393,13 @@ const DetailedItemPage = () => {
 
       {/* 상품 info */}
       <div>
+        <PB30>상세페이지</PB30>
+        <UlStyle>
+          <img style={{ width: "600px" }} src={serverData[0].picture} />
+        </UlStyle>
+      </div>
+      <ItemLine />
+      <div>
         <PB20>Tasting Note</PB20>
         <UlStyle>
           <ListLi taste={tastes} aroma={aromas} finish={finishs} />
@@ -362,7 +409,6 @@ const DetailedItemPage = () => {
         </UlStyle>
       </div>
       <ItemLine />
-
       <div>
         <PB20>Information</PB20>
         <UlStyle>
@@ -378,19 +424,13 @@ const DetailedItemPage = () => {
         </UlStyle>
       </div>
       <ItemLine></ItemLine>
-      <div>
-        <PB30>상세페이지</PB30>
-        <UlStyle>
-          <img style={{ width: "600px" }} src={serverData[0].picture} />
-        </UlStyle>
-      </div>
       {/* <PB30>여기에 상세페이지 </PB30> */}
 
       {/* 리뷰 목록 */}
       <div id="리뷰">
         <MarginB40 />
         <MarginB40 />
-        <PB20>리뷰()</PB20>
+        <PB20>리뷰({review})</PB20>
         <ItemLine
           style={{ background: `${Common.color.p600}`, height: "2px" }}
         />
