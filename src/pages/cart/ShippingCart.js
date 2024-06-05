@@ -125,7 +125,7 @@ const ShippingCart = () => {
       ),
     },
   ];
-  
+
   useEffect(() => {
     setCountState(deliveryData);
   }, []);
@@ -168,37 +168,47 @@ const ShippingCart = () => {
         handleOpenCartAllDeleteModal={handleOpenCartAllDeleteModal}
       /> */}
       <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "50px",
-      }}
-    >
-      <div className="cart-button">
-        <BigButton
-          style={{
-            background: `${Common.color.b900}`,
-            color: ` ${Common.color.p000}`,
-            border: "none",
-            fontSize: "16px",
-            fontWeight: "normal",
-          }}
-          onClick={() => navigate("/directpay/buy", {
-            state: { info: userInfo, productInfo: productInfo },
-          })}
-        >
-          주문하기
-        </BigButton>
-        <DeleteButton
-          onClick={() => {
-            handleOpenCartAllDeleteModal();
-          }}
-        >
-          전체 삭제하기
-        </DeleteButton>
+        style={{
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "50px",
+        }}
+      >
+        <div className="cart-button">
+          <BigButton
+            style={{
+              background: `${Common.color.b900}`,
+              color: ` ${Common.color.p000}`,
+              border: "none",
+              fontSize: "16px",
+              fontWeight: "normal",
+              marginRight: "2rem",
+            }}
+            onClick={() =>
+              navigate("/directpay/buy", {
+                state: { info: userInfo, productInfo: productInfo },
+              })
+            }
+          >
+            주문하기
+          </BigButton>
+          <BigButton
+            style={{
+              background: `${Common.color.b900}`,
+              color: ` ${Common.color.p000}`,
+              border: "none",
+              fontSize: "16px",
+              fontWeight: "normal",
+            }}
+            onClick={() => {
+              handleOpenCartAllDeleteModal();
+            }}
+          >
+            전체 삭제하기
+          </BigButton>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
