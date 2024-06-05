@@ -69,19 +69,15 @@ const MyMainPage = () => {
   const [oldPw, setOldPw] = useState();
   const [newPw, setNewPw] = useState();
   const [newPwCon, setNewPwCon] = useState();
-  const [password, setPassword] = useState();
-  const [newPassword, setNewPassword] = useState();
-  const [passwordch, setPasswordch] = useState();
 
   const navigate = useNavigate();
   const resetSignState = useResetRecoilState(atomSignState);
 
-
   const doSubmit = () => {
     jwtAxios.put(`${SERVER_URL}/user/updatePw`, {
-      password,
-      newPassword,
-      passwordch
+      password: oldPw,
+      newPassword: newPw,
+      passwordch: newPwCon
     }).then(data => {
       if (data.data === '비밀번호 수정이 완료되었습니다.') {
         Swal.fire(
