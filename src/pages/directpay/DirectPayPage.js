@@ -14,6 +14,9 @@ const DirectPayPage = () => {
   const { info, productInfo } = location.state || {};
   const navigate = useNavigate();
 
+  console.log(info,'info')
+  console.log(productInfo,'productinfo')
+
   const [price, setPrice] = useState(0);
   const [productname, setProductname] = useState("");
   const [basketInfo, setBasketInfo] = useState([
@@ -56,6 +59,7 @@ const DirectPayPage = () => {
     }`;
     const rand = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
     for (let i = 0; i < productInfo.length; i++) {
+      console.log(productInfo[i],';asljkdklasjdlkas')
       total += productInfo[i].price * productInfo[i].amount;
       name += productInfo[i].name;
       setBasketInfo([
@@ -98,6 +102,7 @@ const DirectPayPage = () => {
   }
   useEffect(() => {
     if (total === true) {
+      console.log('도나?')
       total = false;
       totalprice();
     }
