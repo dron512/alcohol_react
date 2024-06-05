@@ -15,6 +15,7 @@ import CartTotalPay from "../../components/cart/CartTotalPay";
 import Divider from "../../components/common/Divider";
 import { getDetail } from "../../api/productApi";
 import { useParams } from "react-router";
+import { buypage } from "../../api/directPayApi";
 const PickUpCart = () => {
   const [isCartDeleteModalOpen, setCartDeleteModalOpen] = useState(false);
   const [isCartAllDeleteModalOpen, setCartAllDeleteModalOpen] = useState(false);
@@ -108,9 +109,95 @@ const PickUpCart = () => {
     },
   ];
 
+  const [userInfo, setUserInfo] = useState([
+  //   {
+  //   nickname: "",
+  //   phone: "",
+  //   address: "",
+  //   address2: "",
+  //   email: "",
+  // }
+]);
+
+  const [productInfo, setProductInfo] = useState([
+    // {
+    //   code: "",
+    //   name: "",
+    //   picture: "",
+    //   price: "",
+    //   amount: "",
+    //   market: "",
+    //   delivery: "",
+    //   address: "",
+    //   address2: "",
+    // },
+  ]);
+
+  const product = () => {
+    for (let i = 0; i < pickupData.length; i++) {
+      if (pickupData[i].delivery === "PickUp") {
+        productInfo.push(
+          {
+            code: pickupData[i].alcoholcode,
+            name: pickupData[i].name,
+            picture: pickupData[i].picture,
+            price: pickupData[i].price,
+            amount: pickupData[i].amount,
+            market: pickupData[i].marketname,
+            delivery: pickupData[i].delivery,
+            address: pickupData[i].marketaddress,
+            address2: "",
+          },
+        );
+      } else {
+        productInfo.push(
+          {
+            code: pickupData[i].alcoholcode,
+            name: pickupData[i].name,
+            picture: pickupData[i].picture,
+            price: pickupData[i].price,
+            amount: pickupData[i].amount,
+            market: pickupData[i].marketname,
+            delivery: pickupData[i].delivery,
+            address: userInfo.address,
+            address2: userInfo.address2,
+          },
+        );
+      }
+    }
+    console.log(productInfo);
+  };
+  // pickupData &&
+  //   setProductInfo([
+  //     {
+  //       code: pickupData.alcoholcode,
+  //       name: pickupData.name,
+  //       picture: pickupData.picture,
+  //       price: "",
+  //       amount: "",
+  //       market: "",
+  //       delivery: "",
+  //       address: "",
+  //       address2: "",
+  //     },
+  //   ]);
+
+  const user = async () => {
+    const info = await buypage();
+    userInfo.push({
+      nickname: info.nickname,
+      phone: info.phone,
+      address: info.address,
+      address2: info.address2,
+      email: info.email,
+    });
+  };
+
   useEffect(() => {
     setCountState(pickupData);
-  }, []);
+    pickupData && user();
+    pickupData && product();
+  }, [pickupData]);
 
   return (
     <div>
@@ -148,6 +235,8 @@ const PickUpCart = () => {
       <CartTotalPay cartData={pickupData} />
       <CartOrderDelButton
         handleOpenCartAllDeleteModal={handleOpenCartAllDeleteModal}
+        productInfo={productInfo}
+        info={userInfo}
       />
     </div>
   );

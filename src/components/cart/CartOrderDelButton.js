@@ -3,9 +3,10 @@ import { Common } from "../../styles/CommonCss";
 import { BigButton, DeleteButton } from "../../styles/common/reviewProductCss";
 import { useNavigate } from "react-router";
 
-const CartOrderDelButton = ({handleOpenCartAllDeleteModal}) => {
+const CartOrderDelButton = ({handleOpenCartAllDeleteModal,productInfo,info}) => {
   const navigate = useNavigate();
-
+  console.log(productInfo)
+  console.log(info) 
   return (
     <div
       style={{
@@ -24,7 +25,7 @@ const CartOrderDelButton = ({handleOpenCartAllDeleteModal}) => {
             fontSize: "16px",
             fontWeight: "normal",
           }}
-          onClick={() => navigate("/directpay/buy")}
+          onClick={() => navigate("/directpay/buy",{state: {info:info[0],productInfo:productInfo}})}
         >
           주문하기
         </BigButton>

@@ -83,6 +83,7 @@ const BasicHeader = () => {
                   removeCookie("member");
                   resetSignState();
                   navigate('/');
+                  window.location.reload();
                 }}>
                   <p>로그아웃</p>
                 </Link>
