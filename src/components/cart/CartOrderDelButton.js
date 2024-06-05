@@ -24,18 +24,25 @@ const CartOrderDelButton = ({handleOpenCartAllDeleteModal,productInfo,info}) => 
             border: "none",
             fontSize: "16px",
             fontWeight: "normal",
+            marginRight:"2rem"
           }}
           onClick={() => navigate("/directpay/buy",{state: {info:info[0],productInfo:productInfo}})}
         >
           주문하기
         </BigButton>
-        <DeleteButton
+        <BigButton style={{
+            background: `${Common.color.b900}`,
+            color: ` ${Common.color.p000}`,
+            border: "none",
+            fontSize: "16px",
+            fontWeight: "normal",
+          }}
           onClick={() => {
             handleOpenCartAllDeleteModal();
           }}
         >
           전체 삭제하기
-        </DeleteButton>
+        </BigButton>
       </div>
     </div>
   );
