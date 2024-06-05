@@ -7,39 +7,35 @@ import { buttonPrimaryStyle } from "../../styles/sign/signArea";
 import { SERVER_URL } from "../../api/config";
 import jwtAxios from "../../util/jwtUtil";
 
-var total = true;
-
 const DirectPayPage = () => {
   const location = useLocation();
-  const { info, productInfo } = location.state || {};
+  const { info, productInfo, price } = location.state || {};
   const navigate = useNavigate();
 
-  console.log(info,'info')
-  console.log(productInfo,'productinfo')
+  const totalPrice = price;
 
-  const [price, setPrice] = useState(0);
-  const [productname, setProductname] = useState("");
+  var productname = "";
   const [basketInfo, setBasketInfo] = useState([
-    {
-      image: "",
-      productname: "",
-      orderdate: "",
-      marketname: "",
-      ordernumber: "",
-      delivery: "",
-      address: "",
-      address2: "",
-      price: "",
-      amount: "",
-    },
+    // {
+    //   image: "",
+    //   productname: "",
+    //   orderdate: "",
+    //   marketname: "",
+    //   ordernumber: "",
+    //   delivery: "",
+    //   address: "",
+    //   address2: "",
+    //   price: "",
+    //   amount: "",
+    // },
   ]);
   const [stockNum, setStockNum] = useState([
-    {
-      stocknumber: "",
-      alcohol: "",
-      market: "",
-      amount: "",
-    },
+    // {
+    //   stocknumber: "",
+    //   alcohol: "",
+    //   market: "",
+    //   amount: "",
+    // },
   ]);
 
   const totalprice = () => {
@@ -59,13 +55,12 @@ const DirectPayPage = () => {
     }`;
     const rand = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
     for (let i = 0; i < productInfo.length; i++) {
-      console.log(productInfo[i],';asljkdklasjdlkas')
-      total += productInfo[i].price * productInfo[i].amount;
+      total = productInfo[i].price * productInfo[i].amount;
       name += productInfo[i].name;
-      setBasketInfo([
+      basketInfo.push(
         {
           image: productInfo[i].picture,
-          productname: name,
+          productname: productInfo[i].name,
           purchaseday: date,
           marketname: productInfo[i].market,
           amount: productInfo[i].amount,
@@ -75,10 +70,10 @@ const DirectPayPage = () => {
           address2: "",
           price: total,
         },
-      ]);
+      );
     }
-    setPrice(total);
-    setProductname(name);
+    productname = name;
+    saveBasket();
   };
 
   const saveBasket = async () => {
@@ -90,26 +85,20 @@ const DirectPayPage = () => {
       await jwtAxios
         .post(`${SERVER_URL}/purchase/stockcode`, body, {})
         .then(res => {
-          setStockNum([res.data]);
+          stockNum.push(res.data);
         })
         .catch(e => {
           console.log(e);
         });
     }
+    if (stockNum.length !== 0) {
+      sessionStorage.setItem("stockNum", JSON.stringify(stockNum));
+    }
   };
-  if (stockNum[0] !== 0) {
-    sessionStorage.setItem("stockNum", JSON.stringify(stockNum));
-  }
+
   useEffect(() => {
-    if (total === true) {
-      console.log('도나?')
-      total = false;
-      totalprice();
-    }
-    if (basketInfo[0].image !== "") {
-      saveBasket();
-    }
-  }, [basketInfo]);
+    totalprice();
+  }, []);
 
   const tosspay = async () => {
     const body = {
@@ -119,6 +108,7 @@ const DirectPayPage = () => {
     await jwtAxios
       .post(`${SERVER_URL}/purchase/toss`, body, {})
       .then(res => {
+        console.log(res);
         if (JSON.stringify(res.status).startsWith("2")) {
           sessionStorage.setItem("basketInfo", JSON.stringify(basketInfo));
           window.location.href = res.data.checkoutPage;

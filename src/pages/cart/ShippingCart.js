@@ -15,6 +15,7 @@ import CartTotalPay from "../../components/cart/CartTotalPay";
 import Divider from "../../components/common/Divider";
 import { BigButton, DeleteButton } from "../../styles/common/reviewProductCss";
 import { useNavigate } from "react-router";
+import { buypage } from '../../api/directPayApi';
 
 const ShippingCart = () => {
   const navigate = useNavigate();
@@ -27,27 +28,6 @@ const ShippingCart = () => {
     queryKey: ["cartQuery"],
     queryFn: () => cartPickUpGetApi({ shopInfo: "delivery" }),
   });
-
-  const [userInfo, setUserInfo] = useState({
-    nickname: "",
-    phone: "",
-    address: "",
-    address2: "",
-    email: "",
-  });
-  const [productInfo, setProductInfo] = useState([
-    {
-      code: "",
-      name: "",
-      picture: "",
-      price: "",
-      amount: "",
-      market: "",
-      delivery: "",
-      address: "",
-      address2: "",
-    },
-  ]);
 
   const handleCloseCartDeleteModal = () => {
     setCartDeleteModalOpen(false);
@@ -126,9 +106,71 @@ const ShippingCart = () => {
     },
   ];
 
+  const [userInfo, setUserInfo] = useState([]);
+
+  const [productInfo, setProductInfo] = useState([]);
+
+  var [price,setPrice] = useState([]);
+
+  const totalprice = () =>{
+    var tprice = 0;
+    for(let i = 0; i < deliveryData.length;i++){
+      tprice += (deliveryData[i].price * deliveryData[i].amount);
+    }
+    price.push(tprice)
+  }
+
+  const product = () => {
+    for (let i = 0; i < deliveryData.length; i++) {
+      if (deliveryData[i].delivery === "PickUp") {
+        productInfo.push(
+          {
+            code: deliveryData[i].alcoholcode,
+            name: deliveryData[i].name,
+            picture: deliveryData[i].picture,
+            price: deliveryData[i].price,
+            amount: deliveryData[i].amount,
+            market: deliveryData[i].marketname,
+            delivery: deliveryData[i].delivery,
+            address: deliveryData[i].marketaddress,
+            address2: "",
+          },
+        );
+      } else {
+        productInfo.push(
+          {
+            code: deliveryData[i].alcoholcode,
+            name: deliveryData[i].name,
+            picture: deliveryData[i].picture,
+            price: deliveryData[i].price,
+            amount: deliveryData[i].amount,
+            market: deliveryData[i].marketname,
+            delivery: deliveryData[i].delivery,
+            address: userInfo.address,
+            address2: userInfo.address2,
+          },
+        );
+      }
+    }
+  };
+
+  const user = async () => {
+    const info = await buypage();
+    userInfo.push({
+      nickname: info.nickname,
+      phone: info.phone,
+      address: info.address,
+      address2: info.address2,
+      email: info.email,
+    });
+  };
+
   useEffect(() => {
     setCountState(deliveryData);
-  }, []);
+    deliveryData && user();
+    deliveryData && product();
+    deliveryData && totalprice()
+  }, [deliveryData]);
 
   return (
     <div>
@@ -164,10 +206,13 @@ const ShippingCart = () => {
       </ConfigProvider>
       <Divider />
       <CartTotalPay cartData={deliveryData} />
-      {/* <CartOrderDelButton
+      <CartOrderDelButton
         handleOpenCartAllDeleteModal={handleOpenCartAllDeleteModal}
-      /> */}
-      <div
+        productInfo={productInfo}
+        info={userInfo}
+        price={price[0]}
+      />
+      {/* <div
         style={{
           position: "relative",
           display: "flex",
@@ -208,7 +253,7 @@ const ShippingCart = () => {
             전체 삭제하기
           </BigButton>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

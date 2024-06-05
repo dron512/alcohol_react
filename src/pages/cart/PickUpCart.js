@@ -109,29 +109,19 @@ const PickUpCart = () => {
     },
   ];
 
-  const [userInfo, setUserInfo] = useState([
-  //   {
-  //   nickname: "",
-  //   phone: "",
-  //   address: "",
-  //   address2: "",
-  //   email: "",
-  // }
-]);
+  const [userInfo, setUserInfo] = useState([]);
 
-  const [productInfo, setProductInfo] = useState([
-    // {
-    //   code: "",
-    //   name: "",
-    //   picture: "",
-    //   price: "",
-    //   amount: "",
-    //   market: "",
-    //   delivery: "",
-    //   address: "",
-    //   address2: "",
-    // },
-  ]);
+  const [productInfo, setProductInfo] = useState([]);
+
+  var [price,setPrice] = useState([]);
+
+  const totalprice = () =>{
+    var tprice = 0;
+    for(let i = 0; i < pickupData.length;i++){
+      tprice += (pickupData[i].price * pickupData[i].amount);
+    }
+    price.push(tprice)
+  }
 
   const product = () => {
     for (let i = 0; i < pickupData.length; i++) {
@@ -165,22 +155,7 @@ const PickUpCart = () => {
         );
       }
     }
-    console.log(productInfo);
   };
-  // pickupData &&
-  //   setProductInfo([
-  //     {
-  //       code: pickupData.alcoholcode,
-  //       name: pickupData.name,
-  //       picture: pickupData.picture,
-  //       price: "",
-  //       amount: "",
-  //       market: "",
-  //       delivery: "",
-  //       address: "",
-  //       address2: "",
-  //     },
-  //   ]);
 
   const user = async () => {
     const info = await buypage();
@@ -197,6 +172,7 @@ const PickUpCart = () => {
     setCountState(pickupData);
     pickupData && user();
     pickupData && product();
+    pickupData && totalprice()
   }, [pickupData]);
 
   return (
@@ -237,6 +213,7 @@ const PickUpCart = () => {
         handleOpenCartAllDeleteModal={handleOpenCartAllDeleteModal}
         productInfo={productInfo}
         info={userInfo}
+        price={price[0]}
       />
     </div>
   );

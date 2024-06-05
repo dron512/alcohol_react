@@ -76,7 +76,6 @@ const MyMainPage = () => {
   const navigate = useNavigate();
   const resetSignState = useResetRecoilState(atomSignState);
 
-
   const doSubmit = () => {
     jwtAxios.put(`${SERVER_URL}/user/updatePw`, {
       password,

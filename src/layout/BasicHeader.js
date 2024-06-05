@@ -119,7 +119,7 @@ const BasicHeader = () => {
                   alt="bag"
                 />
               </Link>
-              <Link to="/">
+              <Link to="/mypage/wish">
                 <img
                   src={process.env.PUBLIC_URL + "/images/heart.png"} // 수정된 부분
                   style={{ width: "26px", height: "auto" }}

@@ -12,6 +12,10 @@ const PayCallbackPage = () => {
   const [info, setInfo] = ([JSON.parse(sessionStorage.getItem("basketInfo"))]);
   const [stocknum, setStocknum] = ([JSON.parse(sessionStorage.getItem("stockNum"))]);
 
+  const deletebasket = async () =>{
+    await jwtAxios.delete(`${SERVER_URL}/shoppingbasket/all`)
+  }
+
   const buysave = async () => {
     for(let i = 0; i < info.length; i++){
       var body = {
@@ -37,6 +41,7 @@ const PayCallbackPage = () => {
   };
 
   useEffect(() => {
+    deletebasket();
     buysave();
   }, []);
 
