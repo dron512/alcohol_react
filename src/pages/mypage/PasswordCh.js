@@ -93,19 +93,35 @@ const MyMainPage = () => {
         navigate('/sign/in');
       }
     }).catch(e => {
-      console.log(e);
-      Swal.fire(
-        {
-        title:`<p style='font-size:4rem;margin:1rem;'>
-        비밀번호 변경실패!!
-        <br>
-        ${e.response.data}
-        </p>`,
-        icon: "warning",
-        width: 600,
-        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
-        confirmButtonColor: `${Common.color.f900}`,
-      });
+      console.log(e.response.data.errorMessage);
+      if(e.response.data.errorMessage){
+        Swal.fire(
+          {
+          title:`<p style='font-size:4rem;margin:1rem;'>
+          비밀번호 변경실패!!
+          <br>
+          ${e.response.data.errorMessage}
+          </p>`,
+          icon: "warning",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        });
+      }else{
+        Swal.fire(
+          {
+          title:`<p style='font-size:4rem;margin:1rem;'>
+          비밀번호 변경실패!!
+          <br>
+          ${e.response.data}
+          </p>`,
+          icon: "warning",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        });
+      }
+      
     });
   }
 
