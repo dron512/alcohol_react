@@ -12,10 +12,11 @@ const RecentSearches = ({ display }) => {
   useEffect(() => {
     jwtAxios.get(`${SERVER_URL}/main/recent`)
       .then((response) => {
-        setRecentSearches(response.data);
+        if(JSON.stringify(response.status('2'))){
+          setRecentSearches(response.data);
+        }
       })
       .catch((error) => {
-        console.log(error);
       });
   }, [display]);
 

@@ -86,7 +86,6 @@ const ProductPage = ({test}) => {
 
   const handleClickSearch = () => {
     if (isLogin) {
-      console.log("일로왔냐");
       UserSearchMutation.mutate(alcoholSearch);
     } else {
       SearchMutation.mutate(alcoholSearch);
@@ -100,13 +99,11 @@ const ProductPage = ({test}) => {
   
   const [select, setSelect] = useState(selectInitState);
   const handleClickSelect = e => {
-    console.log("선택된 카테고리", e.target.value);
     setSelect(prevValue => ({
       ...prevValue,
       // category는 API가 없어서 임의로 넣은 변수
       category: e.target.value,
     }));
-    console.log("선택된 카테고리", select);
   };
 
   // 최근 검색어

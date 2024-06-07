@@ -62,7 +62,6 @@ const MyMainPage = () => {
     const fetchData = async()=>{
       jwtAxios.get(`${SERVER_URL}/user/info`)
       .then(result=>{
-        console.log(result);
         setEmail(result.data.email);
         setPhone(result.data.phone);
         setNickname(result.data.nickname);
@@ -70,7 +69,6 @@ const MyMainPage = () => {
         setAddress2(result.data.address2);
       })
       .catch(e=>{
-        console.log(e);
         Swal.fire(
           // {
           //   title: "회원수정",
@@ -98,7 +96,6 @@ const MyMainPage = () => {
       "address": address,
       "address2": address2
     }).then(data => {
-      console.log(data);
       Swal.fire(
         {
         title:"<p style='font-size:4rem;margin:1rem;'>회원 수정 되었습니다.</p>",
@@ -109,7 +106,11 @@ const MyMainPage = () => {
       }
     );
     }).catch(e => {
-      console.log(e);
+      if(e.response.data.errorMessage){
+        Swal.fire(e.response.data.errorMessage)
+      }else{
+        Swal.fire(e.response.data)
+      }
     });
   }
 

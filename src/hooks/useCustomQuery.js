@@ -28,7 +28,6 @@ export const useCustomQuery = () => {
 
   //   술에 따른 이동
   const MoveToType = TypeParam => {
-    console.log("type-parameter", TypeParam);
     let queryStr = "";
     if (TypeParam) {
       const TypeString = getType(TypeParam.type, type);
@@ -41,9 +40,7 @@ export const useCustomQuery = () => {
     navigate({ pathname: "../list", search: queryStr });
   };
   const MoveToSearch = Searchparam => {
-    console.log('이서브파람 = ',Searchparam)
     let queryStr = "";
-    console.log("parameter : ", Searchparam);
     if (Searchparam) {
       const SearchString = getType(Searchparam, search);
       queryStr = createSearchParams({

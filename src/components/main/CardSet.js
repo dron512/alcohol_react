@@ -35,7 +35,6 @@ const CardSet = ({ data }) => {
           <CardContainer key={index}>
             <a
               onClick={() => {
-                console.log(product,'evvvvvvvvvvvvvvv')
                 moveToDetail(product?.code)
                 window.scrollTo(0, 0); // 페이지 상단으로 스크롤 이동
               }}

@@ -9,9 +9,9 @@ import { P20, SignWrap } from "../../styles/basic";
 import { Common } from "../../styles/CommonCss";
 import { LoginTitle, LoginWrap } from "../../styles/login/loginCss";
 import { areaStyle, buttonPrimaryStyle } from "../../styles/sign/signArea";
-import axios from 'axios';
-import { SERVER_URL } from '../../api/config';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import { SERVER_URL } from "../../api/config";
+import Swal from "sweetalert2";
 
 // const initState = {
 //   email: "aaa@naver.com",
@@ -53,8 +53,8 @@ const SignupPage = () => {
   const [address2, setAddress2] = useState("");
   const [authNum, setAuthNum] = useState("");
   const [emailch, setEmailCh] = useState({
-    email:"",
-    auth:""
+    email: "",
+    auth: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [errorCode, setErrorCode] = useState("");
@@ -84,7 +84,6 @@ const SignupPage = () => {
       address,
       address2,
     };
-    console.log("보냄" + JSON.stringify(values));
     postSign({
       values,
       address,
@@ -98,22 +97,19 @@ const SignupPage = () => {
   };
 
   const successFn = data => {
-    // console.log("successFn : ", data);
-      setMemberInfo(data);
-      Swal.fire("가입 완료!");
-      navigate(`/sign/in`);
-      window.scroll(0,0)
+    setMemberInfo(data);
+    Swal.fire("가입 완료!");
+    navigate(`/sign/in`);
+    window.scroll(0, 0);
   };
 
   const failFn = data => {
-    console.log("failFn : ", data);
     setErrorMessage(data.errorMessage);
     setErrorCode(data.errorCode);
     alert(data.errorMessage);
   };
 
   const errorFn = data => {
-    // console.log("errorFn : ", data);
     alert("서버상태 불안정 다음에 회원가입 시도");
     setMemberInfo(data);
   };
@@ -124,24 +120,28 @@ const SignupPage = () => {
       ...prevState,
       address: address,
     }));
-    console.log(emailch)
-  }, [address,emailch]);
+  }, [address, emailch]);
 
-  const emailauth = async () =>{
+  const emailauth = async () => {
     const body = {
-      email : email
-    }
-    console.log(body)
-    await axios.post(`${SERVER_URL}/login/emailauth`,body,{
-    }).then(res => {
-      if(JSON.stringify(res.status).startsWith('2')){
-        setEmailCh({email:email,auth:res.data})
-        Swal.fire('인증번호가 발송됐습니다.')
-      }
-    }).catch(e => {
-      console.log(e)
-    })
-  }
+      email: email,
+    };
+    await axios
+      .post(`${SERVER_URL}/login/emailauth`, body, {})
+      .then(res => {
+        if (JSON.stringify(res.status).startsWith("2")) {
+          setEmailCh({ email: email, auth: res.data });
+          Swal.fire("인증번호가 발송됐습니다.");
+        }
+      })
+      .catch(e => {
+        if(e.response.data.errorMessage){
+          Swal.fire(e.response.data.errorMessage);
+        }else{
+          Swal.fire(e.response.data);
+        }
+      });
+  };
 
   return (
     <div>
@@ -232,10 +232,10 @@ const SignupPage = () => {
                         const currentDate = new Date();
 
                         // 생년월일 계산
-                        const birthYear =(
+                        const birthYear =
                           parseInt(year.substr(0, 2)) > 19
                             ? 2000 + parseInt(year.substr(2, 2))
-                            : 1900 + parseInt(year.substr(2, 2)));
+                            : 1900 + parseInt(year.substr(2, 2));
                         const birthDate = new Date(
                           birthYear,
                           parseInt(month),
@@ -252,12 +252,12 @@ const SignupPage = () => {
                         //   (currentDate.getMonth() === birthDate.getMonth() &&
                         //     currentDate.getDate() < birthDate.getDate())
                         // )
-                          if (age < 20) {
-                            // 20세 미만인 경우 에러 반환
-                            return Promise.reject(
-                              "20세 미만은 가입할 수 없습니다.",
-                            );
-                          }
+                        if (age < 20) {
+                          // 20세 미만인 경우 에러 반환
+                          return Promise.reject(
+                            "20세 미만은 가입할 수 없습니다.",
+                          );
+                        }
                         return Promise.resolve();
                       },
                     },
@@ -322,59 +322,57 @@ const SignupPage = () => {
                 필수정보
               </P20>
               <div style={{ display: "flex", width: 193 }}>
-              <Form.Item
-                name="email"
-                rules={[
-                  {
-                    type: "email",
-                    message: "올바른 이메일 형식을 입력하세요.",
-                  },
-                  {
-                    required: true,
-                    message: "이메일을 입력하세요.",
-                  },
-                  // {
-                  //   pattern:
-                  //     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i,
-                  //   message: "이메일 형식에 맞게 작성해주세요",
-                  // },
-                  {
-                    whitespace: true,
-                    message: "이메일은 공백만으로 만들 수 없습니다",
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="이메일(대소문자를 확인해 주세요)"
-                  style={{ width: 520, height: 60, fontSize: "20px" }}
-                  onChange={e => setEmail(e.target.value)}
-                />
-                {/* {errorMessage.includes("이메일") && (
+                <Form.Item
+                  name="email"
+                  rules={[
+                    {
+                      type: "email",
+                      message: "올바른 이메일 형식을 입력하세요.",
+                    },
+                    {
+                      required: true,
+                      message: "이메일을 입력하세요.",
+                    },
+                    // {
+                    //   pattern:
+                    //     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i,
+                    //   message: "이메일 형식에 맞게 작성해주세요",
+                    // },
+                    {
+                      whitespace: true,
+                      message: "이메일은 공백만으로 만들 수 없습니다",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="이메일(대소문자를 확인해 주세요)"
+                    style={{ width: 520, height: 60, fontSize: "20px" }}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                  {/* {errorMessage.includes("이메일") && (
                   <span style={{ color: "red" }}>{errorMessage}</span>
                 )} */}
-              </Form.Item>
-              <Form.Item>
-          <Button
-            type="button"
-            style={{
-              width: "110px",
-              height: "60px",
-              backgroundColor: `${Common.color.p900}`,
-              border: "none",
-              marginLeft: "8px",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: "16px",
-            }}
-            onClick={emailauth}
-          >
-            인증하기
-          </Button>
-        </Form.Item>
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="button"
+                    style={{
+                      width: "110px",
+                      height: "60px",
+                      backgroundColor: `${Common.color.p900}`,
+                      border: "none",
+                      marginLeft: "8px",
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                    }}
+                    onClick={emailauth}
+                  >
+                    인증하기
+                  </Button>
+                </Form.Item>
               </div>
-              <Form.Item
-                name="authnum"
-              >
+              <Form.Item name="authnum">
                 <Input
                   style={{ height: 60, fontSize: "20px" }}
                   onChange={e => setAuthNum(e.target.value)}

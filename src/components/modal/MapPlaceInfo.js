@@ -21,7 +21,6 @@ const MapPlaceInfo = ({ place, onClose }) => {
     setSelectedAddress(place.address)
     onClose();
   };
-  console.log("ffff ff :", place);
   return (
     <div>
       <PlaceWrap

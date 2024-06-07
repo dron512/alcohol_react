@@ -51,17 +51,14 @@ const LoginPage = () => {
     }
   };
   const successFn = result => {
-    console.log("토큰 - ", result);
     moveToPath("/");
   };
 
   const failFn = result => {
-    console.log("실패", result);
     alert("이메일 및 비밀번호 확인하세요.");
   };
 
   const errorFn = result => {
-    console.log("서버 에러", result);
   };
 
   return (

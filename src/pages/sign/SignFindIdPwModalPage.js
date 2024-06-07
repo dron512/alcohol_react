@@ -77,6 +77,7 @@ const SignFindIdPwModalPage = ({ setIsModalVisible, isModalVisible,changePasswor
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="비밀번호"
               name="password"
+              type='password'
               onChange={setPassword}
               style={{
                 width: "100%",

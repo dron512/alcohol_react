@@ -39,7 +39,6 @@ export const GoCartModal = ({ postcard }) => {
     },
   });
   const handleOpenCartModal = () => {
-    console.log("일로오나"+postcard.delivery)
     if (postcard.stock === 0) {
       Swal.fire("매장을 선택해 주세요.")
       return;

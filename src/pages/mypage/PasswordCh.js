@@ -120,6 +120,7 @@ const MyMainPage = () => {
             <div style={{ width: '100%' }}>
               <Form.Item>
                 <Input placeholder='현재비밀번호'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
@@ -127,6 +128,7 @@ const MyMainPage = () => {
               </Form.Item>
               <Form.Item>
                 <Input placeholder='새로운비밀번호'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
@@ -138,6 +140,7 @@ const MyMainPage = () => {
             <div style={{ flexGrow: 1 }}>
               <Form.Item>
                 <Input placeholder='새로운비밀번호확인'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'

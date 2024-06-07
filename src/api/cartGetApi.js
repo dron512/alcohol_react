@@ -7,7 +7,6 @@ export const cartPickUpGetApi = async ({ shopInfo }) => {
       `${SERVER_URL}/shoppingbasket/${shopInfo}`,
     );
     if (response.status === 200) {
-      console.log(response);
       return response.data;
     } else {
       console.log("no");

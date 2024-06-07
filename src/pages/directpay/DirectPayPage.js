@@ -15,30 +15,11 @@ const DirectPayPage = () => {
   const totalPrice = price;
 
   var productname = "";
-  const [basketInfo, setBasketInfo] = useState([
-    // {
-    //   image: "",
-    //   productname: "",
-    //   orderdate: "",
-    //   marketname: "",
-    //   ordernumber: "",
-    //   delivery: "",
-    //   address: "",
-    //   address2: "",
-    //   price: "",
-    //   amount: "",
-    // },
-  ]);
-  const [stockNum, setStockNum] = useState([
-    // {
-    //   stocknumber: "",
-    //   alcohol: "",
-    //   market: "",
-    //   amount: "",
-    // },
-  ]);
+  const [basketInfo, setBasketInfo] = useState([]);
+  const [stockNum, setStockNum] = useState([]);
 
   const totalprice = () => {
+    console.log(price)
     var total = 0;
     var name = "";
     const orderdate = new Date();

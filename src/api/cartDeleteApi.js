@@ -4,7 +4,6 @@ import { SERVER_URL } from "./config";
 
 export const cartDeleteApi = async ({ id }) => {
   const body = { data: { id: id } };
-  console.log("id", id);
   try {
     const response = await jwtAxios.delete(
       `${SERVER_URL}/shoppingbasket`,
@@ -26,7 +25,6 @@ export const useCartDeleteMutation = () => {
 
   const { mutate, isLoading } = useMutation(({ id }) => cartDeleteApi({ id }), {
     onSuccess: res => {
-      console.log("res", res);
       queryClient.invalidateQueries(["cartQuery"]);
     },
     onError: error => {
