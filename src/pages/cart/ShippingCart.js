@@ -110,7 +110,7 @@ const ShippingCart = () => {
 
   const [productInfo, setProductInfo] = useState([]);
 
-  var [price,setPrice] = useState([]);
+  const [price,setPrice] = useState([]);
 
   const totalprice = () =>{
     var tprice = 0;
@@ -210,7 +210,7 @@ const ShippingCart = () => {
         handleOpenCartAllDeleteModal={handleOpenCartAllDeleteModal}
         productInfo={productInfo}
         info={userInfo}
-        price={price[0]}
+        price={price[1]}
       />
       {/* <div
         style={{

@@ -113,12 +113,10 @@ const DetailedItemPage = () => {
   // @AREA
 
   const { code } = useParams();
-  // console.log("params ", code);
 
   const detailParam = {
     code: Number(code),
   };
-  console.log(detailParam);
 
   const initState = [
     {
@@ -145,7 +143,6 @@ const DetailedItemPage = () => {
   });
 
   const serverData = data || initState;
-  // console.log("response", serverData[0].name);
 
   const starImages = Array.from(
     { length: serverData[0].ratingaverage },
@@ -164,9 +161,7 @@ const DetailedItemPage = () => {
   const contents = serverData[0].content;
   const nations = serverData[0].nation;
   const review = serverData[0].reviewcacount;
-  // console.log("fff : ", taste);
   const taste = tastes;
-  console.log("array : ", taste);
   const categoryArray = [
     `${serverData[0].maincategory}`,
     `${serverData[0].subcategory}`,
@@ -221,18 +216,15 @@ const DetailedItemPage = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-  // console.log("stock num : ", selectedStockNum);
 
   const postCard = {
     alcoholcode : code,
     stock: selectedStockNum,
-    // marketname,
     marketname: selectedPlace,
     amount: count,
     price: serverData[0].price,
     delivery
   };
-  // console.log("ㅍㅋ : ", postCard);
 
   // -------------------찜목록 추가 기능 end ---------------------------
   const buy = async () => {

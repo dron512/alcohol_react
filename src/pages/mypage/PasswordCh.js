@@ -93,19 +93,35 @@ const MyMainPage = () => {
         navigate('/sign/in');
       }
     }).catch(e => {
-      console.log(e);
-      Swal.fire(
-        {
-        title:`<p style='font-size:4rem;margin:1rem;'>
-        비밀번호 변경실패!!
-        <br>
-        ${e.response.data}
-        </p>`,
-        icon: "warning",
-        width: 600,
-        confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
-        confirmButtonColor: `${Common.color.f900}`,
-      });
+      console.log(e.response.data.errorMessage);
+      if(e.response.data.errorMessage){
+        Swal.fire(
+          {
+          title:`<p style='font-size:4rem;margin:1rem;'>
+          비밀번호 변경실패!!
+          <br>
+          ${e.response.data.errorMessage}
+          </p>`,
+          icon: "warning",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        });
+      }else{
+        Swal.fire(
+          {
+          title:`<p style='font-size:4rem;margin:1rem;'>
+          비밀번호 변경실패!!
+          <br>
+          ${e.response.data}
+          </p>`,
+          icon: "warning",
+          width: 600,
+          confirmButtonText: `<span style="display:bolck;font-size:4rem;width:200px;padding:1rem;">확인</span>`,
+          confirmButtonColor: `${Common.color.f900}`,
+        });
+      }
+      
     });
   }
 
@@ -120,6 +136,7 @@ const MyMainPage = () => {
             <div style={{ width: '100%' }}>
               <Form.Item>
                 <Input placeholder='현재비밀번호'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
@@ -127,6 +144,7 @@ const MyMainPage = () => {
               </Form.Item>
               <Form.Item>
                 <Input placeholder='새로운비밀번호'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'
@@ -138,6 +156,7 @@ const MyMainPage = () => {
             <div style={{ flexGrow: 1 }}>
               <Form.Item>
                 <Input placeholder='새로운비밀번호확인'
+                type='password'
                   style={{
                     width: '40%', fontSize: '2rem',
                     padding: '1rem', margin: '0.5rem'

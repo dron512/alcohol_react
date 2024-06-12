@@ -14,7 +14,6 @@ const MyPage = () => {
   const [activeSide, setActiveSide] = useRecoilState(activeSideState);
   const handleClick = sidenId => {
     setActiveSide(sidenId);
-    console.log("선택된 사이드바", sidenId);
   };
 
   return (

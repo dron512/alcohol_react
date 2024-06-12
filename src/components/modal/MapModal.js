@@ -15,25 +15,17 @@ import { getMarketPath } from "../../api/productApi";
 // const { TextArea } = Input;
 
 export const MapModal = ({ onClose, code }) => {
-  console.log("code입니다. : ", code);
 
   const { data: marketData } = useQuery({
     queryFn: () => getMarketPath({ code }),
   });
-  // const marketData = data;
-  console.log("받은 데이터 : ", marketData);
 
-  // const onChange = e => {
-  //   console.log("Change:", e.target.value);
-  // };
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const transMapAddress = marketData => {
-    console.log("load : ", marketData);
     return marketData?.map(item => item.address);
   };
   const mapAddress = transMapAddress(marketData);
-  console.log("주소 슛 :", mapAddress);
 
   const handlePlaceClick = index => {
     setSelectedIndex(index);
@@ -63,7 +55,6 @@ export const MapModal = ({ onClose, code }) => {
       // resultPath가 비어있을 때만 실행
       Promise.all(mapAddress.map(addr => getAddr(addr)))
         .then(coordsArray => {
-          console.log("변환된 좌표:", coordsArray);
           setResultPath(coordsArray);
         })
         .catch(error => {

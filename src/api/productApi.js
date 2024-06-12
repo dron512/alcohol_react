@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwtAxios from "../util/jwtUtil";
 import { SERVER_URL } from "./config";
+import Swal from 'sweetalert2';
 
 const prefix = `${SERVER_URL}/main`;
 
@@ -35,8 +36,6 @@ export const postMainCate = async ({
 
 // Final
 export const getAlcholType = async (mainCategory, subCategory) => {
-  console.log("m-axios  :", mainCategory);
-  console.log("s-axios  :", subCategory);
   let category;
   if (subCategory !== "") {
     category = subCategory;
@@ -51,27 +50,21 @@ export const getAlcholType = async (mainCategory, subCategory) => {
       `${SERVER_URL}/search/category?category=${category}`,
     );
     if (response.status === 200) {
-      // console.log("data :", response.data);
       return response.data;
-    } else {
-      console.log("no");
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 };
 
 export const nonSignAlcholSearch = async ( {search} ) => {
   console.log("axios-data", search);
   try {
-    console.log('여기오나')
     const response = await axios.post(
       `${SERVER_URL}/main/anony/contents`,
       search,
     );
-    console.log(response.status)
     if (response.status === 200) {
-      console.log("result", response.data);
       const result = response.data;
       return result;
     } else {
@@ -79,7 +72,6 @@ export const nonSignAlcholSearch = async ( {search} ) => {
     }
   } catch (error) {
     alert(error.response.data.errorMessage)
-    console.log(error);
     // alert(error.response.data.errorMessage)
   }
 };
@@ -99,7 +91,6 @@ export const nonSignAlcholSearch = async ( {search} ) => {
 // export const SignAlcholSearch = async () => {};
 
 export const SignAlcholSearch = async ({ search }) => {
-  console.log("axios-data", search); 
   try {
     const response = await jwtAxios.post(`${SERVER_URL}/main/contents`, search);
     if (response.status === 200) {
@@ -109,20 +100,17 @@ export const SignAlcholSearch = async ({ search }) => {
       console.log("no");
     }
   } catch (error) {
-    console.log(error);
+    Swal.fire(error.response.data.errorMessage);
   }
 };
 
 export const getDetail = async ({ code }) => {
-  console.log("axios", code);
   const codeParam = {
     code: Number(code),
   };
-  console.log("params  ", codeParam);
   try {
     const response = await jwtAxios.post(`${SERVER_URL}/detail`, codeParam);
     if (response.status === 200) {
-      console.log("R : ", response.data);
       return response.data;
     } else {
       console.log("no");
@@ -136,7 +124,6 @@ export const getRecent = async () => {
   try {
     const response = await axios.get(`${SERVER_URL}/main/recnet`);
     if (response.status === 200) {
-      console.log("결과값 : ", response.data);
       return response.data;
     }
   } catch (error) {
@@ -147,7 +134,6 @@ export const getUserRecent = async () => {
   try {
     const response = await jwtAxios.get(`${SERVER_URL}/main/recent`);
     if (response.status === 200) {
-      console.log("결과값 : ", response.data);
       return response.data;
     }
   } catch (error) {
@@ -156,7 +142,6 @@ export const getUserRecent = async () => {
 };
 
 export const getMarketPath = async ({ code }) => {
-  console.log("ax:", code);
   const postcode = {
     code: code,
   };
@@ -174,15 +159,12 @@ export const getMarketPath = async ({ code }) => {
 };
 
 export const postAddCart = async ({ postcard }) => {
-  console.log("ax :", postcard);
-
   try {
     const response = await jwtAxios.post(
       `${SERVER_URL}/shoppingbasket`,
       postcard,
     );
     if (response.status === 200) {
-      console.log("result :", response.data);
       return response.data;
     }
   } catch (error) {
